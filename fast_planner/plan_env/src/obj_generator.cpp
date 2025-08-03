@@ -141,6 +141,7 @@ int main(int argc, char** argv) {
 
   /* ---------- start loop ---------- */
   rclcpp::spin(node);
+  rclcpp::shutdown();
 
   return 0;
 }
