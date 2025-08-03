@@ -28,25 +28,25 @@
 using std::cout;
 using std::endl;
 namespace fast_planner {
-PlanningVisualization::PlanningVisualization(ros::NodeHandle& nh) {
+PlanningVisualization::PlanningVisualization(rclcpp::Node::SharedPtr nh) {
   node = nh;
 
-  traj_pub_ = node.advertise<visualization_msgs::Marker>("/planning_vis/trajectory", 20);
+  traj_pub_ = node->create_publisher<visualization_msgs::msg::Marker>("/planning_vis/trajectory", 20);
   pubs_.push_back(traj_pub_);
 
-  topo_pub_ = node.advertise<visualization_msgs::Marker>("/planning_vis/topo_path", 20);
+  topo_pub_ = node->create_publisher<visualization_msgs::msg::Marker>("/planning_vis/topo_path", 20);
   pubs_.push_back(topo_pub_);
 
-  predict_pub_ = node.advertise<visualization_msgs::Marker>("/planning_vis/prediction", 20);
+  predict_pub_ = node->create_publisher<visualization_msgs::msg::Marker>("/planning_vis/prediction", 20);
   pubs_.push_back(predict_pub_);
 
-  visib_pub_ = node.advertise<visualization_msgs::Marker>("/planning_vis/visib_constraint", 20);
+  visib_pub_ = node->create_publisher<visualization_msgs::msg::Marker>("/planning_vis/visib_constraint", 20);
   pubs_.push_back(visib_pub_);
 
-  frontier_pub_ = node.advertise<visualization_msgs::Marker>("/planning_vis/frontier", 20);
+  frontier_pub_ = node->create_publisher<visualization_msgs::msg::Marker>("/planning_vis/frontier", 20);
   pubs_.push_back(frontier_pub_);
 
-  yaw_pub_ = node.advertise<visualization_msgs::Marker>("/planning_vis/yaw", 20);
+  yaw_pub_ = node->create_publisher<visualization_msgs::msg::Marker>("/planning_vis/yaw", 20);
   pubs_.push_back(yaw_pub_);
 
   last_topo_path1_num_     = 0;
@@ -58,15 +58,15 @@ PlanningVisualization::PlanningVisualization(ros::NodeHandle& nh) {
 
 void PlanningVisualization::displaySphereList(const vector<Eigen::Vector3d>& list, double resolution,
                                               const Eigen::Vector4d& color, int id, int pub_id) {
-  visualization_msgs::Marker mk;
+  visualization_msgs::msg::Marker mk;
   mk.header.frame_id = "world";
-  mk.header.stamp    = ros::Time::now();
-  mk.type            = visualization_msgs::Marker::SPHERE_LIST;
-  mk.action          = visualization_msgs::Marker::DELETE;
+  mk.header.stamp    = rclcpp::Clock().now();
+  mk.type            = visualization_msgs::msg::Marker::SPHERE_LIST;
+  mk.action          = visualization_msgs::msg::Marker::DELETE;
   mk.id              = id;
-  pubs_[pub_id].publish(mk);
+  pubs_[pub_id]->publish(mk);
 
-  mk.action             = visualization_msgs::Marker::ADD;
+  mk.action             = visualization_msgs::msg::Marker::ADD;
   mk.pose.orientation.x = 0.0;
   mk.pose.orientation.y = 0.0;
   mk.pose.orientation.z = 0.0;
@@ -81,28 +81,28 @@ void PlanningVisualization::displaySphereList(const vector<Eigen::Vector3d>& lis
   mk.scale.y = resolution;
   mk.scale.z = resolution;
 
-  geometry_msgs::Point pt;
+  geometry_msgs::msg::Point pt;
   for (int i = 0; i < int(list.size()); i++) {
     pt.x = list[i](0);
     pt.y = list[i](1);
     pt.z = list[i](2);
     mk.points.push_back(pt);
   }
-  pubs_[pub_id].publish(mk);
-  ros::Duration(0.001).sleep();
+  pubs_[pub_id]->publish(mk);
+  rclcpp::sleep_for(std::chrono::milliseconds(1));
 }
 
 void PlanningVisualization::displayCubeList(const vector<Eigen::Vector3d>& list, double resolution,
                                             const Eigen::Vector4d& color, int id, int pub_id) {
-  visualization_msgs::Marker mk;
+  visualization_msgs::msg::Marker mk;
   mk.header.frame_id = "world";
-  mk.header.stamp    = ros::Time::now();
-  mk.type            = visualization_msgs::Marker::CUBE_LIST;
-  mk.action          = visualization_msgs::Marker::DELETE;
+  mk.header.stamp    = rclcpp::Clock().now();
+  mk.type            = visualization_msgs::msg::Marker::CUBE_LIST;
+  mk.action          = visualization_msgs::msg::Marker::DELETE;
   mk.id              = id;
-  pubs_[pub_id].publish(mk);
+  pubs_[pub_id]->publish(mk);
 
-  mk.action             = visualization_msgs::Marker::ADD;
+  mk.action             = visualization_msgs::msg::Marker::ADD;
   mk.pose.orientation.x = 0.0;
   mk.pose.orientation.y = 0.0;
   mk.pose.orientation.z = 0.0;
@@ -117,30 +117,30 @@ void PlanningVisualization::displayCubeList(const vector<Eigen::Vector3d>& list,
   mk.scale.y = resolution;
   mk.scale.z = resolution;
 
-  geometry_msgs::Point pt;
+  geometry_msgs::msg::Point pt;
   for (int i = 0; i < int(list.size()); i++) {
     pt.x = list[i](0);
     pt.y = list[i](1);
     pt.z = list[i](2);
     mk.points.push_back(pt);
   }
-  pubs_[pub_id].publish(mk);
+  pubs_[pub_id]->publish(mk);
 
-  ros::Duration(0.001).sleep();
+  rclcpp::sleep_for(std::chrono::milliseconds(1));
 }
 
 void PlanningVisualization::displayLineList(const vector<Eigen::Vector3d>& list1,
                                             const vector<Eigen::Vector3d>& list2, double line_width,
                                             const Eigen::Vector4d& color, int id, int pub_id) {
-  visualization_msgs::Marker mk;
+  visualization_msgs::msg::Marker mk;
   mk.header.frame_id = "world";
-  mk.header.stamp    = ros::Time::now();
-  mk.type            = visualization_msgs::Marker::LINE_LIST;
-  mk.action          = visualization_msgs::Marker::DELETE;
+  mk.header.stamp    = rclcpp::Clock().now();
+  mk.type            = visualization_msgs::msg::Marker::LINE_LIST;
+  mk.action          = visualization_msgs::msg::Marker::DELETE;
   mk.id              = id;
-  pubs_[pub_id].publish(mk);
+  pubs_[pub_id]->publish(mk);
 
-  mk.action             = visualization_msgs::Marker::ADD;
+  mk.action             = visualization_msgs::msg::Marker::ADD;
   mk.pose.orientation.x = 0.0;
   mk.pose.orientation.y = 0.0;
   mk.pose.orientation.z = 0.0;
@@ -152,7 +152,7 @@ void PlanningVisualization::displayLineList(const vector<Eigen::Vector3d>& list1
   mk.color.a = color(3);
   mk.scale.x = line_width;
 
-  geometry_msgs::Point pt;
+  geometry_msgs::msg::Point pt;
   for (int i = 0; i < int(list1.size()); ++i) {
     pt.x = list1[i](0);
     pt.y = list1[i](1);
@@ -164,9 +164,9 @@ void PlanningVisualization::displayLineList(const vector<Eigen::Vector3d>& list1
     pt.z = list2[i](2);
     mk.points.push_back(pt);
   }
-  pubs_[pub_id].publish(mk);
+  pubs_[pub_id]->publish(mk);
 
-  ros::Duration(0.001).sleep();
+  rclcpp::sleep_for(std::chrono::milliseconds(1));
 }
 
 void PlanningVisualization::drawBsplinesPhase1(vector<NonUniformBspline>& bsplines, double size) {
@@ -333,8 +333,8 @@ void PlanningVisualization::drawPolynomialTraj(PolynomialTraj poly_traj, double 
 
 void PlanningVisualization::drawPrediction(ObjPrediction pred, double resolution,
                                            const Eigen::Vector4d& color, int id) {
-  ros::Time    time_now   = ros::Time::now();
-  double       start_time = (time_now - ObjHistory::global_start_time_).toSec();
+  rclcpp::Time    time_now   = rclcpp::Clock().now();
+  double       start_time = (time_now - ObjHistory::global_start_time_).seconds();
   const double range      = 5.6;
 
   vector<Eigen::Vector3d> traj;
