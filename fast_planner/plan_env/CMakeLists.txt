@@ -22,7 +22,6 @@ include_directories(
   include
   ${EIGEN3_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
-  ${OpenCV_INCLUDE_DIRS}
 )
 
 link_directories(${PCL_LIBRARY_DIRS})
@@ -41,7 +40,6 @@ ament_target_dependencies(plan_env
   sensor_msgs
   nav_msgs
   geometry_msgs
-  PCL
   pcl_conversions
   OpenCV
   message_filters
@@ -58,7 +56,6 @@ ament_target_dependencies(obj_generator
   sensor_msgs
   nav_msgs
   geometry_msgs
-  PCL
   pcl_conversions
   OpenCV
   message_filters

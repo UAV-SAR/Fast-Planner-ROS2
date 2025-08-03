@@ -1,46 +1,59 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(bspline_opt)
+cmake_minimum_required(VERSION 3.8)
+project(bspline_opt LANGUAGES CXX)
 
-set(CMAKE_BUILD_TYPE "Release")
-set(CMAKE_CXX_FLAGS "-std=c++11")
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall")
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(visualization_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(cv_bridge REQUIRED)
+find_package(plan_env REQUIRED)
 find_package(Eigen3 REQUIRED)
-find_package(PCL 1.7 REQUIRED)
+find_package(PCL REQUIRED)
+find_package(pcl_conversions REQUIRED)
 
 set(NLOPT_INCLUDE_DIR "/usr/local/include")  
-set(NLOPT_LIBRARY "/usr/local/lib/libnlopt.so")  
-
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
-  visualization_msgs
-  cv_bridge
-  plan_env
-)
-
-catkin_package(
- INCLUDE_DIRS include
- LIBRARIES bspline_opt
- CATKIN_DEPENDS plan_env
-#  DEPENDS system_lib
-)
+set(NLOPT_LIBRARY "/usr/local/lib/libnlopt.so")
 
 include_directories( 
-    SYSTEM 
     include 
-    ${catkin_INCLUDE_DIRS}
     ${Eigen3_INCLUDE_DIRS} 
     ${PCL_INCLUDE_DIRS}
     ${NLOPT_INCLUDE_DIR}  
 )
 
-add_library( bspline_opt 
+link_directories(${PCL_LIBRARY_DIRS})
+link_libraries(${NLOPT_LIBRARY})
+
+add_library(bspline_opt 
     src/bspline_optimizer.cpp 
-    )
-target_link_libraries( bspline_opt
-    ${catkin_LIBRARIES} 
-    ${NLOPT_LIBRARY}   
-    )
+)
+ament_target_dependencies(bspline_opt
+    rclcpp
+    std_msgs
+    visualization_msgs
+    cv_bridge
+    plan_env
+    nav_msgs
+    pcl_conversions
+)
+
+install(
+  DIRECTORY include/
+  DESTINATION include
+)
+
+install(
+  TARGETS bspline_opt
+  EXPORT export_${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+ament_export_include_directories(include)
+ament_export_libraries(bspline_opt)
+ament_package()

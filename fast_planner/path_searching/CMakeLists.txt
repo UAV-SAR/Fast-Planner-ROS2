@@ -35,7 +35,6 @@ ament_target_dependencies(path_searching
   nav_msgs
   cv_bridge
   plan_env
-  PCL
   pcl_conversions
 )
 
