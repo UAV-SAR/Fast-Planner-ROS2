@@ -29,8 +29,7 @@
 #include <Eigen/Eigen>
 #include <iostream>
 #include <map>
-#include <ros/console.h>
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 #include <string>
 #include <unordered_map>
 // #include "grad_spline/sdf_map.h"
@@ -160,7 +159,7 @@ public:
   enum { REACH_END = 1, NO_PATH = 2 };
 
   /* main API */
-  void setParam(ros::NodeHandle& nh);
+  void setParam(rclcpp::Node::SharedPtr nh);
   void init();
   void reset();
   int search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt, bool dynamic = false,

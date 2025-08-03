@@ -99,19 +99,19 @@ int KinodynamicAstar::search(Eigen::Vector3d start_pt, Eigen::Vector3d start_v, 
         estimateHeuristic(cur_node->state, end_state, time_to_goal);
         computeShotTraj(cur_node->state, end_state, time_to_goal);
         if (init_search)
-          ROS_ERROR("Shot in first search loop!");
+          RCLCPP_ERROR(rclcpp::get_logger("kinodynamic_astar"),"Shot in first search loop!");
       }
     }
     if (reach_horizon)
     {
       if (is_shot_succ_)
       {
-        std::cout << "reach end" << std::endl;
+        RCLCPP_INFO(rclcpp::get_logger("kinodynamic_astar"), "reach end");
         return REACH_END;
       }
       else
       {
-        std::cout << "reach horizon" << std::endl;
+        RCLCPP_INFO(rclcpp::get_logger("kinodynamic_astar"), "reach horizon");
         return REACH_HORIZON;
       }
     }
@@ -321,24 +321,24 @@ int KinodynamicAstar::search(Eigen::Vector3d start_pt, Eigen::Vector3d start_v, 
   return NO_PATH;
 }
 
-void KinodynamicAstar::setParam(ros::NodeHandle& nh)
+void KinodynamicAstar::setParam(rclcpp::Node::SharedPtr nh)
 {
-  nh.param("search/max_tau", max_tau_, -1.0);
-  nh.param("search/init_max_tau", init_max_tau_, -1.0);
-  nh.param("search/max_vel", max_vel_, -1.0);
-  nh.param("search/max_acc", max_acc_, -1.0);
-  nh.param("search/w_time", w_time_, -1.0);
-  nh.param("search/horizon", horizon_, -1.0);
-  nh.param("search/resolution_astar", resolution_, -1.0);
-  nh.param("search/time_resolution", time_resolution_, -1.0);
-  nh.param("search/lambda_heu", lambda_heu_, -1.0);
-  nh.param("search/allocate_num", allocate_num_, -1);
-  nh.param("search/check_num", check_num_, -1);
-  nh.param("search/optimistic", optimistic_, true);
+  nh->get_parameter("search/max_tau", max_tau_);
+  nh->get_parameter("search/init_max_tau", init_max_tau_);
+  nh->get_parameter("search/max_vel", max_vel_);
+  nh->get_parameter("search/max_acc", max_acc_);
+  nh->get_parameter("search/w_time", w_time_);
+  nh->get_parameter("search/horizon", horizon_);
+  nh->get_parameter("search/resolution_astar", resolution_);
+  nh->get_parameter("search/time_resolution", time_resolution_);
+  nh->get_parameter("search/lambda_heu", lambda_heu_);
+  nh->get_parameter("search/allocate_num", allocate_num_);
+  nh->get_parameter("search/check_num", check_num_);
+  nh->get_parameter("search/optimistic", optimistic_);
   tie_breaker_ = 1.0 + 1.0 / 10000;
 
   double vel_margin;
-  nh.param("search/vel_margin", vel_margin, 0.0);
+  nh->get_parameter("search/vel_margin", vel_margin);
   max_vel_ += vel_margin;
 }
 

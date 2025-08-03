@@ -2,8 +2,7 @@
 #define _KINODYNAMIC_ASTAR_H
 
 // #include <path_searching/matrix_hash.h>
-#include <ros/console.h>
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 #include <Eigen/Eigen>
 #include <boost/functional/hash.hpp>
 #include <iostream>
@@ -160,7 +159,7 @@ class KinodynamicAstar {
   enum { REACH_HORIZON = 1, REACH_END = 2, NO_PATH = 3, NEAR_END = 4 };
 
   /* main API */
-  void setParam(ros::NodeHandle& nh);
+  void setParam(rclcpp::Node::SharedPtr nh);
   void init();
   void reset();
   int search(Eigen::Vector3d start_pt, Eigen::Vector3d start_vel,
