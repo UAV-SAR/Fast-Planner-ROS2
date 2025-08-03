@@ -41,7 +41,6 @@ ament_target_dependencies(plan_env
   sensor_msgs
   nav_msgs
   geometry_msgs
-  Eigen3
   PCL
   pcl_conversions
   OpenCV
@@ -59,7 +58,6 @@ ament_target_dependencies(obj_generator
   sensor_msgs
   nav_msgs
   geometry_msgs
-  Eigen3
   PCL
   pcl_conversions
   OpenCV
