@@ -1,0 +1,6 @@
+setup.py
+quadrotor_msgs/__init__.py
+quadrotor_msgs.egg-info/PKG-INFO
+quadrotor_msgs.egg-info/SOURCES.txt
+quadrotor_msgs.egg-info/dependency_links.txt
+quadrotor_msgs.egg-info/top_level.txt

@@ -27,7 +27,7 @@ include_directories(
 
 link_directories(${PCL_LIBRARY_DIRS})
 
-add_library( traj_utils
+add_library(traj_utils SHARED
     src/planning_visualization.cpp 
 )
 ament_target_dependencies(traj_utils

@@ -1,0 +1,27 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from quadrotor_msgs/msg/Serial.msg
+// generated code does not contain a copyright notice
+
+#include "std_msgs/msg/Header.idl"
+
+module quadrotor_msgs {
+  module msg {
+    module Serial_Constants {
+      const uint8 SO3_CMD = 115;
+      const uint8 TRPY_CMD = 112;
+      const uint8 STATUS_DATA = 99;
+      const uint8 OUTPUT_DATA = 100;
+      const uint8 PPR_OUTPUT_DATA = 116;
+      const uint8 PPR_GAINS = 103;
+    };
+    struct Serial {
+      std_msgs::msg::Header header;
+
+      uint8 channel;
+
+      uint8 type;
+
+      sequence<uint8> data;
+    };
+  };
+};

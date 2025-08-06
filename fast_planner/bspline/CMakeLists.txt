@@ -13,7 +13,7 @@ include_directories(
   ${EIGEN3_INCLUDE_DIRS}
 )
 
-add_library(bspline 
+add_library(bspline SHARED
     src/non_uniform_bspline.cpp
 )
 ament_target_dependencies(bspline

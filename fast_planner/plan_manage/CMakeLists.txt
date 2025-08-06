@@ -21,6 +21,7 @@ find_package(traj_utils REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(PCL REQUIRED)
 find_package(pcl_conversions REQUIRED)
+find_package(quadrotor_msgs REQUIRED)
 
 include_directories(
   include
@@ -71,6 +72,7 @@ ament_target_dependencies(traj_server
   bspline_msgs
   pcl_conversions
   poly_traj
+  quadrotor_msgs
 )
 
 install(
@@ -79,7 +81,7 @@ install(
 )
 
 install(
-    TARGETS fast_planner_node traj_server
+    TARGETS traj_server fast_planner_node
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin

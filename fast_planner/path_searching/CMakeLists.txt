@@ -23,7 +23,7 @@ include_directories(
 
 link_directories(${PCL_LIBRARY_DIRS})
 
-add_library(path_searching 
+add_library(path_searching SHARED
     src/kinodynamic_astar.cpp 
     src/astar.cpp
     src/topo_prm.cpp

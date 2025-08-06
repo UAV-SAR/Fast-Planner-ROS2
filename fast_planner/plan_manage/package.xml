@@ -23,6 +23,7 @@
   <depend>cv_bridge</depend>
   <depend>bspline_msgs</depend>
   <depend>poly_traj</depend>
+  <depend>quadrotor_msgs</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

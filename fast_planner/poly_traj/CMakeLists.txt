@@ -14,7 +14,7 @@ include_directories(
   ${EIGEN3_INCLUDE_DIR}
 )
 
-add_library(poly_traj 
+add_library(poly_traj SHARED
     src/polynomial_traj.cpp 
 )
 ament_target_dependencies(poly_traj

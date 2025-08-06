@@ -77,10 +77,12 @@ private:
   int current_wp_;
 
   /* ROS utils */
-  ros::NodeHandle node_;
-  ros::Timer exec_timer_, safety_timer_, vis_timer_, frontier_timer_;
-  ros::Subscriber waypoint_sub_, odom_sub_;
-  ros::Publisher replan_pub_, new_pub_, bspline_pub_;
+  rclcpp::Node::SharedPtr node_;
+  rclcpp::TimerBase::SharedPtr exec_timer_, safety_timer_, vis_timer_, frontier_timer_;
+  rclcpp::Subscription<nav_msgs::msg::Path>::SharedPtr waypoint_sub_;
+  rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
+  rclcpp::Publisher<std_msgs::msg::Empty>::SharedPtr replan_pub_, new_pub_;
+  rclcpp::Publisher<bspline_msgs::msg::Bspline>::SharedPtr bspline_pub_;
 
   /* helper functions */
   bool callSearchAndOptimization();    // front-end and back-end method
@@ -90,16 +92,16 @@ private:
   void printFSMExecState();
 
   /* ROS functions */
-  void execFSMCallback(const ros::TimerEvent& e);
-  void checkCollisionCallback(const ros::TimerEvent& e);
-  void waypointCallback(const nav_msgs::PathConstPtr& msg);
-  void odometryCallback(const nav_msgs::OdometryConstPtr& msg);
+  void execFSMCallback();
+  void checkCollisionCallback();
+  void waypointCallback(const nav_msgs::msg::Path& msg);
+  void odometryCallback(const nav_msgs::msg::Odometry& msg);
 
 public:
   TopoReplanFSM(/* args */) {}
   ~TopoReplanFSM() {}
 
-  void init(ros::NodeHandle& nh);
+  void init(rclcpp::Node::SharedPtr nh);
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };

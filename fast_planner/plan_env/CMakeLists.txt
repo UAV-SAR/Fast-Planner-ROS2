@@ -26,7 +26,7 @@ include_directories(
 
 link_directories(${PCL_LIBRARY_DIRS})
 
-add_library(plan_env
+add_library(plan_env SHARED
   src/sdf_map.cpp
   src/obj_predictor.cpp
   src/edt_environment.cpp

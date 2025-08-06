@@ -1,0 +1,67 @@
+[0.011s] Invoking command in '/home/damian/Fast-Planner/uav_simulator/Utils/build/quadrotor_msgs_encode_decode': AMENT_PREFIX_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/damian/Fast-Planner/uav_simulator/Utils/quadrotor_msgs_encode_decode -DCMAKE_INSTALL_PREFIX=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode
+[0.065s] -- The CXX compiler identification is GNU 11.4.0
+[0.071s] -- Detecting CXX compiler ABI info
+[0.138s] -- Detecting CXX compiler ABI info - done
+[0.146s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.146s] -- Detecting CXX compile features
+[0.146s] -- Detecting CXX compile features - done
+[0.149s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.440s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.513s] -- Found rclcpp: 16.0.14 (/opt/ros/humble/share/rclcpp/cmake)
+[0.550s] -- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.554s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.561s] -- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.572s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.586s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.624s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.626s] -- Found rmw_fastrtps_cpp: 6.2.8 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.694s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[0.717s] -- Found FastRTPS: /opt/ros/humble/include  
+[0.753s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.760s] -- Looking for C++ include pthread.h
+[0.830s] -- Looking for C++ include pthread.h - found
+[0.830s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.899s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.900s] -- Found Threads: TRUE  
+[0.947s] -- Found quadrotor_msgs: 0.0.0 (/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/share/quadrotor_msgs/cmake)
+[1.051s] -- Configuring done
+[1.061s] -- Generating done
+[1.064s] -- Build files have been written to: /home/damian/Fast-Planner/uav_simulator/Utils/build/quadrotor_msgs_encode_decode
+[1.071s] Invoked command in '/home/damian/Fast-Planner/uav_simulator/Utils/build/quadrotor_msgs_encode_decode' returned '0': AMENT_PREFIX_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/damian/Fast-Planner/uav_simulator/Utils/quadrotor_msgs_encode_decode -DCMAKE_INSTALL_PREFIX=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode
+[1.072s] Invoking command in '/home/damian/Fast-Planner/uav_simulator/Utils/build/quadrotor_msgs_encode_decode': AMENT_PREFIX_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/damian/Fast-Planner/uav_simulator/Utils/build/quadrotor_msgs_encode_decode -- -j12 -l12
+[1.112s] [ 50%] [32mBuilding CXX object CMakeFiles/decode_msgs.dir/src/decode_msgs.cpp.o[0m
+[1.112s] [ 50%] [32mBuilding CXX object CMakeFiles/encode_msgs.dir/src/encode_msgs.cpp.o[0m
+[1.606s] [ 75%] [32m[1mLinking CXX static library libencode_msgs.a[0m
+[1.657s] [ 75%] Built target encode_msgs
+[2.272s] [100%] [32m[1mLinking CXX static library libdecode_msgs.a[0m
+[2.323s] [100%] Built target decode_msgs
+[2.332s] Invoked command in '/home/damian/Fast-Planner/uav_simulator/Utils/build/quadrotor_msgs_encode_decode' returned '0': AMENT_PREFIX_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/damian/Fast-Planner/uav_simulator/Utils/build/quadrotor_msgs_encode_decode -- -j12 -l12
+[2.339s] Invoking command in '/home/damian/Fast-Planner/uav_simulator/Utils/build/quadrotor_msgs_encode_decode': AMENT_PREFIX_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/damian/Fast-Planner/uav_simulator/Utils/build/quadrotor_msgs_encode_decode
+[2.346s] -- Install configuration: ""
+[2.346s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/lib/libdecode_msgs.a
+[2.346s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/lib/libencode_msgs.a
+[2.346s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/include/
+[2.346s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/include//quadrotor_msgs_encode_decode
+[2.346s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/include//quadrotor_msgs_encode_decode/decode_msgs.h
+[2.346s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/include//quadrotor_msgs_encode_decode/encode_msgs.h
+[2.347s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/include//quadrotor_msgs_encode_decode/comm_types.h
+[2.347s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/environment/library_path.sh
+[2.347s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/environment/library_path.dsv
+[2.347s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/ament_index/resource_index/package_run_dependencies/quadrotor_msgs_encode_decode
+[2.347s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/ament_index/resource_index/parent_prefix_path/quadrotor_msgs_encode_decode
+[2.347s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/environment/ament_prefix_path.sh
+[2.347s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/environment/ament_prefix_path.dsv
+[2.347s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/environment/path.sh
+[2.347s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/environment/path.dsv
+[2.348s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/local_setup.bash
+[2.348s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/local_setup.sh
+[2.348s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/local_setup.zsh
+[2.348s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/local_setup.dsv
+[2.348s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/package.dsv
+[2.348s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/ament_index/resource_index/packages/quadrotor_msgs_encode_decode
+[2.348s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/cmake/ament_cmake_export_include_directories-extras.cmake
+[2.348s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/cmake/ament_cmake_export_libraries-extras.cmake
+[2.348s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/cmake/quadrotor_msgs_encode_decodeConfig.cmake
+[2.349s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/cmake/quadrotor_msgs_encode_decodeConfig-version.cmake
+[2.349s] -- Installing: /home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs_encode_decode/share/quadrotor_msgs_encode_decode/package.xml
+[2.350s] Invoked command in '/home/damian/Fast-Planner/uav_simulator/Utils/build/quadrotor_msgs_encode_decode' returned '0': AMENT_PREFIX_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/damian/Fast-Planner/uav_simulator/Utils/install/quadrotor_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/damian/Fast-Planner/uav_simulator/Utils/build/quadrotor_msgs_encode_decode

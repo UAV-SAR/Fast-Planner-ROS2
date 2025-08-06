@@ -37,11 +37,12 @@ backward::SignalHandling sh;
 using namespace fast_planner;
 
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "fast_planner_node");
-  ros::NodeHandle nh("~");
+  rclcpp::init(argc, argv);
+  rclcpp::Node::SharedPtr nh = rclcpp::Node::make_shared("fast_planner_node");
 
   int planner;
-  nh.param("planner_node/planner", planner, -1);
+  nh->declare_parameter("planner_node/planner", -1);
+  nh->get_parameter("planner_node/planner", planner);
 
   TopoReplanFSM topo_replan;
   KinoReplanFSM kino_replan;
@@ -52,8 +53,8 @@ int main(int argc, char** argv) {
     topo_replan.init(nh);
   }
 
-  ros::Duration(1.0).sleep();
-  ros::spin();
+  rclcpp::sleep_for(std::chrono::seconds(1));
+  rclcpp::spin(nh);
 
   return 0;
 }

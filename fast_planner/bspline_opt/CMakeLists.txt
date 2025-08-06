@@ -28,7 +28,7 @@ include_directories(
 link_directories(${PCL_LIBRARY_DIRS})
 link_libraries(${NLOPT_LIBRARY})
 
-add_library(bspline_opt 
+add_library(bspline_opt SHARED
     src/bspline_optimizer.cpp 
 )
 ament_target_dependencies(bspline_opt
