@@ -29,18 +29,18 @@
 #include <Eigen/Eigen>
 #include <algorithm>
 #include <iostream>
-#include <nav_msgs/Path.h>
-#include <ros/ros.h>
-#include <std_msgs/Empty.h>
+#include <nav_msgs/msg/path.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/empty.hpp>
 #include <vector>
-#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/msg/marker.hpp>
 
 #include <bspline_opt/bspline_optimizer.h>
 #include <path_searching/kinodynamic_astar.h>
 #include <plan_env/edt_environment.h>
 #include <plan_env/obj_predictor.h>
 #include <plan_env/sdf_map.h>
-#include <plan_manage/Bspline.h>
+#include <bspline_msgs/msg/bspline.hpp>
 #include <plan_manage/planner_manager.h>
 #include <traj_utils/planning_visualization.h>
 

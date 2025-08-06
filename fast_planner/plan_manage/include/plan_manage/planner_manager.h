@@ -37,7 +37,7 @@
 
 #include <plan_manage/plan_container.hpp>
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 namespace fast_planner {
 

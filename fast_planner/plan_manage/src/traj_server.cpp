@@ -24,12 +24,12 @@
 
 
 #include "bspline/non_uniform_bspline.h"
-#include "nav_msgs/Odometry.h"
-#include "plan_manage/Bspline.h"
+#include "nav_msgs/msg/odometry.hpp"
+#include "bspline_msgs/msg/bspline.hpp"
 #include "quadrotor_msgs/PositionCommand.h"
-#include "std_msgs/Empty.h"
-#include "visualization_msgs/Marker.h"
-#include <ros/ros.h>
+#include "std_msgs/msg/empty.hpp"
+#include "visualization_msgs/msg/marker.hpp"
+#include <rclcpp/rclcpp.hpp>
 
 ros::Publisher cmd_vis_pub, pos_cmd_pub, traj_pub;
 

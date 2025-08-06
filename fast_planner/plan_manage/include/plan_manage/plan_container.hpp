@@ -28,7 +28,7 @@
 
 #include <Eigen/Eigen>
 #include <vector>
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 #include <bspline/non_uniform_bspline.h>
 #include <poly_traj/polynomial_traj.h>
