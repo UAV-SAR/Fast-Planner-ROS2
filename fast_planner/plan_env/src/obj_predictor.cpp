@@ -70,6 +70,10 @@ ObjPredictor::~ObjPredictor() {
 }
 
 void ObjPredictor::init() {
+  /* declare param */
+  node_handle_->declare_parameter("prediction/obj_num", 5);
+  node_handle_->declare_parameter("prediction/lambda", 1.0);
+  node_handle_->declare_parameter("prediction/predict_rate", 1.0);
   /* get param */
   node_handle_->get_parameter("prediction/obj_num", obj_num_);
   node_handle_->get_parameter("prediction/lambda", lambda_);

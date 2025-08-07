@@ -31,6 +31,44 @@
 void SDFMap::initMap(rclcpp::Node::SharedPtr nh) {
   node_ = nh;
 
+  /* declare parameter */
+  node_->declare_parameter("sdf_map/resolution", -1.0);
+  node_->declare_parameter("sdf_map/map_size_x", -1.0);
+  node_->declare_parameter("sdf_map/map_size_y", -1.0);
+  node_->declare_parameter("sdf_map/map_size_z", -1.0);
+  node_->declare_parameter("sdf_map/local_update_range_x", -1.0);
+  node_->declare_parameter("sdf_map/local_update_range_y", -1.0);
+  node_->declare_parameter("sdf_map/local_update_range_z", -1.0);
+  node_->declare_parameter("sdf_map/obstacles_inflation", -1.0);
+  node_->declare_parameter("sdf_map/fx", -1.0);
+  node_->declare_parameter("sdf_map/fy", -1.0);
+  node_->declare_parameter("sdf_map/cx", -1.0);
+  node_->declare_parameter("sdf_map/cy", -1.0);
+  node_->declare_parameter("sdf_map/use_depth_filter", true);
+  node_->declare_parameter("sdf_map/depth_filter_tolerance", -1.0);
+  node_->declare_parameter("sdf_map/depth_filter_maxdist", -1.0);
+  node_->declare_parameter("sdf_map/depth_filter_mindist", -1.0);
+  node_->declare_parameter("sdf_map/depth_filter_margin", -1);
+  node_->declare_parameter("sdf_map/k_depth_scaling_factor", -1.0);
+  node_->declare_parameter("sdf_map/skip_pixel", -1);
+  node_->declare_parameter("sdf_map/p_hit", 0.70);
+  node_->declare_parameter("sdf_map/p_miss", 0.35);
+  node_->declare_parameter("sdf_map/p_min", 0.12);
+  node_->declare_parameter("sdf_map/p_max", 0.97);
+  node_->declare_parameter("sdf_map/p_occ", 0.80);
+  node_->declare_parameter("sdf_map/min_ray_length", -0.1);
+  node_->declare_parameter("sdf_map/max_ray_length", -0.1);
+  node_->declare_parameter("sdf_map/esdf_slice_height", -0.1);
+  node_->declare_parameter("sdf_map/visualization_truncate_height", -0.1);
+  node_->declare_parameter("sdf_map/virtual_ceil_height", -0.1);
+  node_->declare_parameter("sdf_map/show_occ_time", false);
+  node_->declare_parameter("sdf_map/show_esdf_time", false);
+  node_->declare_parameter("sdf_map/pose_type", 1);
+  node_->declare_parameter("sdf_map/frame_id", "world");
+  node_->declare_parameter("sdf_map/local_bound_inflate", 1.0);
+  node_->declare_parameter("sdf_map/local_map_margin", 1);
+  node_->declare_parameter("sdf_map/ground_height", 1.0);
+
   /* get parameter */
   double x_size, y_size, z_size;
   node_->get_parameter("sdf_map/resolution", mp_.resolution_);
@@ -41,12 +79,10 @@ void SDFMap::initMap(rclcpp::Node::SharedPtr nh) {
   node_->get_parameter("sdf_map/local_update_range_y", mp_.local_update_range_(1));
   node_->get_parameter("sdf_map/local_update_range_z", mp_.local_update_range_(2));
   node_->get_parameter("sdf_map/obstacles_inflation", mp_.obstacles_inflation_);
-
   node_->get_parameter("sdf_map/fx", mp_.fx_);
   node_->get_parameter("sdf_map/fy", mp_.fy_);
   node_->get_parameter("sdf_map/cx", mp_.cx_);
   node_->get_parameter("sdf_map/cy", mp_.cy_);
-
   node_->get_parameter("sdf_map/use_depth_filter", mp_.use_depth_filter_);
   node_->get_parameter("sdf_map/depth_filter_tolerance", mp_.depth_filter_tolerance_);
   node_->get_parameter("sdf_map/depth_filter_maxdist", mp_.depth_filter_maxdist_);
@@ -54,7 +90,6 @@ void SDFMap::initMap(rclcpp::Node::SharedPtr nh) {
   node_->get_parameter("sdf_map/depth_filter_margin", mp_.depth_filter_margin_);
   node_->get_parameter("sdf_map/k_depth_scaling_factor", mp_.k_depth_scaling_factor_);
   node_->get_parameter("sdf_map/skip_pixel", mp_.skip_pixel_);
-
   node_->get_parameter("sdf_map/p_hit", mp_.p_hit_);
   node_->get_parameter("sdf_map/p_miss", mp_.p_miss_);
   node_->get_parameter("sdf_map/p_min", mp_.p_min_);
@@ -62,15 +97,12 @@ void SDFMap::initMap(rclcpp::Node::SharedPtr nh) {
   node_->get_parameter("sdf_map/p_occ", mp_.p_occ_);
   node_->get_parameter("sdf_map/min_ray_length", mp_.min_ray_length_);
   node_->get_parameter("sdf_map/max_ray_length", mp_.max_ray_length_);
-
   node_->get_parameter("sdf_map/esdf_slice_height", mp_.esdf_slice_height_);
   node_->get_parameter("sdf_map/visualization_truncate_height", mp_.visualization_truncate_height_);
   node_->get_parameter("sdf_map/virtual_ceil_height", mp_.virtual_ceil_height_);
-
   node_->get_parameter("sdf_map/show_occ_time", mp_.show_occ_time_);
   node_->get_parameter("sdf_map/show_esdf_time", mp_.show_esdf_time_);
   node_->get_parameter("sdf_map/pose_type", mp_.pose_type_);
-
   node_->get_parameter("sdf_map/frame_id", mp_.frame_id_);
   node_->get_parameter("sdf_map/local_bound_inflate", mp_.local_bound_inflate_);
   node_->get_parameter("sdf_map/local_map_margin", mp_.local_map_margin_);
