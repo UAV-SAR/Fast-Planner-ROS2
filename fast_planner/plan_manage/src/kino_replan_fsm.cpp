@@ -35,13 +35,22 @@ void KinoReplanFSM::init(rclcpp::Node::SharedPtr nh) {
   have_target_ = false;
   have_odom_   = false;
 
+
   /*  fsm param  */
+  node_->declare_parameter("fsm/flight_type", -1);
+  node_->declare_parameter("fsm/thresh_replan", -1.0);
+  node_->declare_parameter("fsm/thresh_no_replan", -1.0);
+  node_->declare_parameter("fsm/waypoint_num", -1);
+
   node_->get_parameter("fsm/flight_type", target_type_);
   node_->get_parameter("fsm/thresh_replan", replan_thresh_);
   node_->get_parameter("fsm/thresh_no_replan", no_replan_thresh_);
-
   node_->get_parameter("fsm/waypoint_num", waypoint_num_);
   for (int i = 0; i < waypoint_num_; i++) {
+    node_->declare_parameter("fsm/waypoint" + to_string(i) + "_x", -1.0);
+    node_->declare_parameter("fsm/waypoint" + to_string(i) + "_y", -1.0);
+    node_->declare_parameter("fsm/waypoint" + to_string(i) + "_z", -1.0);
+
     node_->get_parameter("fsm/waypoint" + to_string(i) + "_x", waypoints_[i][0]);
     node_->get_parameter("fsm/waypoint" + to_string(i) + "_y", waypoints_[i][1]);
     node_->get_parameter("fsm/waypoint" + to_string(i) + "_z", waypoints_[i][2]);

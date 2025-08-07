@@ -311,7 +311,8 @@ int main(int argc, char** argv) {
   cmd.kv[0] = vel_gain[0];
   cmd.kv[1] = vel_gain[1];
   cmd.kv[2] = vel_gain[2];
-
+  
+  node->declare_parameter("traj_server/time_forward", -1.0);
   node->get_parameter("traj_server/time_forward", time_forward_);
   last_yaw_ = 0.0;
 

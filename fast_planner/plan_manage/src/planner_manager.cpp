@@ -37,6 +37,18 @@ FastPlannerManager::~FastPlannerManager() { std::cout << "des manager" << std::e
 
 void FastPlannerManager::initPlanModules(rclcpp::Node::SharedPtr nh) {
   /* read algorithm parameters */
+  nh->declare_parameter("manager/max_vel", -1.0);
+  nh->declare_parameter("manager/max_acc", -1.0);
+  nh->declare_parameter("manager/max_jerk", -1.0);
+  nh->declare_parameter("manager/dynamic_environment", -1);
+  nh->declare_parameter("manager/clearance_threshold", -1.0);
+  nh->declare_parameter("manager/local_segment_length", -1.0);
+  nh->declare_parameter("manager/control_points_distance", -1.0);
+  nh->declare_parameter("manager/use_geometric_path", false);
+  nh->declare_parameter("manager/use_kinodynamic_path", false);
+  nh->declare_parameter("manager/use_topo_path", false);
+  nh->declare_parameter("manager/use_optimization", false);
+  nh->declare_parameter("manager/use_active_perception", false);
 
   nh->get_parameter("manager/max_vel", pp_.max_vel_);
   nh->get_parameter("manager/max_acc", pp_.max_acc_);
