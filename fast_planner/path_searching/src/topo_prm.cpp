@@ -36,6 +36,20 @@ void TopologyPRM::init(rclcpp::Node::SharedPtr nh) {
   eng_ = default_random_engine(rd_());
   rand_pos_ = uniform_real_distribution<double>(-1.0, 1.0);
 
+  // declare parameters
+  nh->declare_parameter("topo_prm/sample_inflate_x", -1.0);
+  nh->declare_parameter("topo_prm/sample_inflate_y", -1.0);
+  nh->declare_parameter("topo_prm/sample_inflate_z", -1.0);
+  nh->declare_parameter("topo_prm/clearance", -1.0);
+  nh->declare_parameter("topo_prm/short_cut_num", -1);
+  nh->declare_parameter("topo_prm/reserve_num", -1);
+  nh->declare_parameter("topo_prm/ratio_to_short", -1.0);
+  nh->declare_parameter("topo_prm/max_sample_num", -1);
+  nh->declare_parameter("topo_prm/max_sample_time", -1.0);
+  nh->declare_parameter("topo_prm/max_raw_path", -1);
+  nh->declare_parameter("topo_prm/max_raw_path2", -1);
+  nh->declare_parameter("topo_prm/parallel_shortcut", false);
+
   // init parameter
   nh->get_parameter("topo_prm/sample_inflate_x", sample_inflate_(0));
   nh->get_parameter("topo_prm/sample_inflate_y", sample_inflate_(1));

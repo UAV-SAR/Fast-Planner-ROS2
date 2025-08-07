@@ -203,6 +203,12 @@ int Astar::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt, bool dynamic
 }
 
 void Astar::setParam(rclcpp::Node::SharedPtr nh) {
+  nh->declare_parameter("astar/resolution_astar", -1.0);
+  nh->declare_parameter("astar/time_resolution", -1.0);
+  nh->declare_parameter("astar/lambda_heu", -1.0);
+  nh->declare_parameter("astar/margin", -1.0);
+  nh->declare_parameter("astar/allocate_num", -1);
+
   nh->get_parameter("astar/resolution_astar", resolution_);
   nh->get_parameter("astar/time_resolution", time_resolution_);
   nh->get_parameter("astar/lambda_heu", lambda_heu_);
