@@ -1,4 +1,5 @@
-#include "depth_render.cuh"
+#include "local_sensing/depth_render.cuh"
+
 __global__ void render(float3 *data_devptr, Parameter *para_devptr, DeviceImage<int> *depth_devptr)
 {
 	const int index = threadIdx.x + blockIdx.x * blockDim.x;
@@ -115,57 +116,16 @@ void DepthRender::set_data(vector<float> &cloud_data)
   	throw CudaException("DeviceLinear: unable to copy data from host to device.", err);
 
   has_devptr = true;
-
-  //printf("load points done!\n");
 }
 
-/*void DepthRender::render_pose( Matrix3d &rotation, Vector3d &translation, int *host_ptr)
-{
-	for(int i = 0; i < 3; i++)
-	{
-		parameter.t[i] = translation(i);
-		for(int j = 0; j < 3; j++)
-		{
-			parameter.r[i][j] = rotation(i,j);
-		}
-	}
- 	cudaError err = cudaMemcpy(
-          parameter_devptr,
-          &parameter,
-          sizeof(Parameter),
-          cudaMemcpyHostToDevice);
-  if(err != cudaSuccess)
-  	throw CudaException("DeviceLinear: unable to copy data from host to device.", err);
-
-	DeviceImage<int> depth_output(parameter.width, parameter.height);
-  depth_output.zero();
-
-  dim3 depth_block;
-  dim3 depth_grid;
-  depth_block.x = 16;
-  depth_block.y = 16;
-  depth_grid.x = (parameter.width + depth_block.x - 1 ) / depth_block.x;
-  depth_grid.y = (parameter.height + depth_block.y - 1 ) / depth_block.y;
-  depth_initial<<<depth_grid, depth_block>>>(depth_output.dev_ptr);
-
-  dim3 render_block;
-  dim3 render_grid;
-  render_block.x = 64;
-  render_grid.x = (cloud_size + render_block.x - 1) / render_block.x;
-  render<<<render_grid, render_block>>>(dev_cloud_ptr, parameter_devptr, depth_output.dev_ptr);
-
-	depth_output.getDevData(host_ptr);
-}
-*/
-//void DepthRender::render_pose( Matrix4d &transformation, int *host_ptr)
 void DepthRender::render_pose( double * transformation, int *host_ptr)
 {
 	for(int i = 0; i < 3; i++)
 	{
-		parameter.t[i] = transformation[4 * i + 3];//transformation(i,3);
+		parameter.t[i] = transformation[4 * i + 3];
 		for(int j = 0; j < 3; j++)
 		{
-			parameter.r[i][j] = transformation[4 * i + j];//transformation(i,j);
+			parameter.r[i][j] = transformation[4 * i + j];
 		}
 	}
  	cudaError err = cudaMemcpy(
