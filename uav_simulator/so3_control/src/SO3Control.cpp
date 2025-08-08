@@ -1,8 +1,6 @@
 #include <iostream>
 #include <so3_control/SO3Control.h>
 
-#include <ros/ros.h>
-
 SO3Control::SO3Control()
   : mass_(0.5)
   , g_(9.81)

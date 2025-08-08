@@ -21,7 +21,7 @@ include_directories(
 
 link_directories(${PCL_LIBRARY_DIRS})
 
-add_executable (random_forest src/random_forest_sensing.cpp )
+add_executable(random_forest src/random_forest_sensing.cpp )
 ament_target_dependencies(random_forest
   rclcpp
   std_msgs
