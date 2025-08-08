@@ -5,7 +5,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 #include <uav_utils/geometry_utils.h>
-#include <cassert>
 
 typedef struct _Control
 {
@@ -227,7 +226,11 @@ main(int argc, char** argv)
   double simulation_rate;
   n->declare_parameter("rate/simulation", 1000.0);
   n->get_parameter("rate/simulation", simulation_rate);
-  assert(simulation_rate > 0);
+  if ((!simulation_rate > 0))
+  {
+    RCLCPP_ERROR(n->get_logger(), "Invalid simulation rate: %.3f", simulation_rate);
+    return -1;
+  }
 
   double odom_rate;
   n->declare_parameter("rate/odom", 100.0);
