@@ -80,36 +80,34 @@ TEST(GeometryUtilsFloat, Angle) {
 }
 
 TEST(ConverterDouble, Equality) {
-    nav_msgs::OdometryPtr pOdom(new nav_msgs::Odometry());
+    nav_msgs::msg::Odometry pOdom;
 
-    pOdom->pose.pose.position.x = 1.0;
-    pOdom->pose.pose.position.y = 2.0;
-    pOdom->pose.pose.position.z = 3.0;
+    pOdom.pose.pose.position.x = 1.0;
+    pOdom.pose.pose.position.y = 2.0;
+    pOdom.pose.pose.position.z = 3.0;
 
-    pOdom->pose.pose.orientation.w = 0.5;
-    pOdom->pose.pose.orientation.x = -0.5;
-    pOdom->pose.pose.orientation.y = 0.5;
-    pOdom->pose.pose.orientation.z = -0.5;
+    pOdom.pose.pose.orientation.w = 0.5;
+    pOdom.pose.pose.orientation.x = -0.5;
+    pOdom.pose.pose.orientation.y = 0.5;
+    pOdom.pose.pose.orientation.z = -0.5;
 
-    pOdom->twist.twist.linear.x = -1.0;
-    pOdom->twist.twist.linear.y = -2.0;
-    pOdom->twist.twist.linear.z = -3.0;
+    pOdom.twist.twist.linear.x = -1.0;
+    pOdom.twist.twist.linear.y = -2.0;
+    pOdom.twist.twist.linear.z = -3.0;
 
-    pOdom->twist.twist.angular.x = -0.1;
-    pOdom->twist.twist.angular.y = -0.2;
-    pOdom->twist.twist.angular.z = -0.3;
+    pOdom.twist.twist.angular.x = -0.1;
+    pOdom.twist.twist.angular.y = -0.2;
+    pOdom.twist.twist.angular.z = -0.3;
 
     Eigen::Vector3d p, v, w;
     Eigen::Quaterniond q;
 
-    nav_msgs::Odometry odom_ = *pOdom;
-
     extract_odometry(pOdom, p, v, q, w);
 
-    ASSERT_TRUE(v.isApprox(from_vector3_msg(pOdom->twist.twist.linear)));
-    ASSERT_TRUE(w.isApprox(from_vector3_msg(pOdom->twist.twist.angular)));
-    ASSERT_TRUE(p.isApprox(from_point_msg(pOdom->pose.pose.position)));
-    ASSERT_TRUE(q.isApprox(from_quaternion_msg(pOdom->pose.pose.orientation)));
+    ASSERT_TRUE(v.isApprox(from_vector3_msg(pOdom.twist.twist.linear)));
+    ASSERT_TRUE(w.isApprox(from_vector3_msg(pOdom.twist.twist.angular)));
+    ASSERT_TRUE(p.isApprox(from_point_msg(pOdom.pose.pose.position)));
+    ASSERT_TRUE(q.isApprox(from_quaternion_msg(pOdom.pose.pose.orientation)));
 
     ASSERT_TRUE(v.isApprox(from_vector3_msg(to_vector3_msg(v))));
     ASSERT_TRUE(p.isApprox(from_point_msg(to_point_msg(p))));
