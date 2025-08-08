@@ -29,4 +29,5 @@ ament_target_dependencies(uav_utils-test
   cmake_utils
 )
 
+ament_export_include_directories(include)
 ament_package()
