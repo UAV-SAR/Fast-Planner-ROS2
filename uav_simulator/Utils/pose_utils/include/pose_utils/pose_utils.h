@@ -4,8 +4,10 @@
 #include <iostream>
 #include "armadillo"
 
-#define PI 3.14159265359
-#define NUM_INF 999999.9
+namespace pose_utils {
+  constexpr double PI = 3.14159265359;
+  constexpr double NUM_INF = 999999.9;
+}
 
 using namespace arma;
 using namespace std;

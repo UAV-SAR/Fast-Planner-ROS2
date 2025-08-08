@@ -2,9 +2,11 @@
 #define MAP2D_H
 
 #include <iostream>
-#include <ros/ros.h>
-#include <tf/tf.h>
-#include <nav_msgs/OccupancyGrid.h>
+#include <rclcpp/rclcpp.hpp>
+#include "tf2/LinearMath/Quaternion.h"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
+#include "tf2/utils.hpp"
+#include <nav_msgs/msg/occupancy_grid.hpp>
 
 using namespace std;
 
@@ -12,7 +14,7 @@ class Map2D
 {
 
 private:
-  nav_msgs::OccupancyGrid map;
+  nav_msgs::msg::OccupancyGrid map;
   int  expandStep;  
   int  binning;  
   bool isBinningSet;
@@ -21,8 +23,12 @@ private:
 public:
   Map2D() 
   {
-    map.data.resize(0); 
-    map.info.origin.orientation = tf::createQuaternionMsgFromYaw(0.0);  
+    map.data.resize(0);
+    geometry_msgs::msg::Quaternion q;
+    tf2::Quaternion tf_q;
+    tf_q.setRPY(0.0, 0.0, 0.0); 
+    q = tf2::toMsg(tf_q);
+    map.info.origin.orientation = q;
     expandStep   = 200; 
     binning      = 1; 
     isBinningSet = false; 
@@ -32,7 +38,11 @@ public:
   Map2D(int _binning)
   {
     map.data.resize(0); 
-    map.info.origin.orientation = tf::createQuaternionMsgFromYaw(0.0);  
+    geometry_msgs::msg::Quaternion q;
+    tf2::Quaternion tf_q;
+    tf_q.setRPY(0.0, 0.0, 0.0); 
+    q = tf2::toMsg(tf_q);
+    map.info.origin.orientation = q;
     expandStep   = 200; 
     binning      = _binning; 
     isBinningSet = true; 
@@ -47,7 +57,7 @@ public:
   double GetMaxX() { return map.info.origin.position.x + map.info.width  * map.info.resolution; }
   double GetMaxY() { return map.info.origin.position.y + map.info.height * map.info.resolution; }
   bool   Updated() { return updated; }  
-  void   Reset()   { map = nav_msgs::OccupancyGrid(); }
+  void   Reset()   { map = nav_msgs::msg::OccupancyGrid(); }
 
   void SetBinning(int _binning) 
   { 
@@ -66,7 +76,7 @@ public:
       return map.data[ym*map.info.width+xm];
   }
 
-  void Replace(nav_msgs::OccupancyGrid m)
+  void Replace(nav_msgs::msg::OccupancyGrid m)
   {
     // Check data
     if (m.data.size() == 0)
@@ -104,7 +114,7 @@ public:
   }
 
   // Merge submap
-  void Update(nav_msgs::OccupancyGrid m)
+  void Update(nav_msgs::msg::OccupancyGrid m)
   {
     // Check data
     if (m.data.size() == 0)
@@ -144,7 +154,7 @@ public:
     // Get Info
     double ox   = m.info.origin.position.x;
     double oy   = m.info.origin.position.y;
-    double oyaw = tf::getYaw(m.info.origin.orientation);
+    double oyaw = tf2::getYaw(m.info.origin.orientation);
     double syaw = sin(oyaw);
     double cyaw = cos(oyaw);
     int mx      = m.info.width;
@@ -229,10 +239,10 @@ public:
     updated = true;
   }
 
-  const nav_msgs::OccupancyGrid& GetMap()
+  const nav_msgs::msg::OccupancyGrid& GetMap()
   {
-    map.header.stamp       = ros::Time::now();
-    map.info.map_load_time = ros::Time::now();
+    map.header.stamp       = rclcpp::Clock().now();
+    map.info.map_load_time = rclcpp::Clock().now();
     map.header.frame_id    = string("/map");
     updated = false;
     return map;
