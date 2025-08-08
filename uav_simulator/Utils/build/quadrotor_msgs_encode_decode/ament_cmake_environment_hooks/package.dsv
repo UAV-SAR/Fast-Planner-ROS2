@@ -1,4 +1,0 @@
-source;share/quadrotor_msgs_encode_decode/local_setup.bash
-source;share/quadrotor_msgs_encode_decode/local_setup.dsv
-source;share/quadrotor_msgs_encode_decode/local_setup.sh
-source;share/quadrotor_msgs_encode_decode/local_setup.zsh
