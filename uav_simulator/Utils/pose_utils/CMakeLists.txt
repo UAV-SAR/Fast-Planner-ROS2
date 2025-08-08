@@ -1,26 +1,31 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(pose_utils)
+cmake_minimum_required(VERSION 3.8)
+project(pose_utils LANGUAGES CXX)
 
-find_package(catkin REQUIRED COMPONENTS
-  #armadillo
-  roscpp
-)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES pose_utils
-#  CATKIN_DEPENDS geometry_msgs nav_msgs
-#  DEPENDS system_lib
-)
-
+find_package(ament_cmake REQUIRED)
 find_package(Armadillo REQUIRED)
 
 include_directories(
-    ${catkin_INCLUDE_DIRS}
-    ${ARMADILLO_INCLUDE_DIRS}
     include
-    )
+    ${ARMADILLO_INCLUDE_DIRS}
+)
 
-add_library(pose_utils 
-   ${ARMADILLO_LIBRARIES}
-   src/pose_utils.cpp)
+add_library(pose_utils SHARED src/pose_utils.cpp)
+target_link_libraries(pose_utils ${ARMADILLO_LIBRARIES})
+
+install(TARGETS pose_utils
+  EXPORT export_${PROJECT_NAME}
+  RUNTIME DESTINATION bin
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+)
+
+install(DIRECTORY include/
+  DESTINATION include
+)
+
+ament_export_include_directories(include)
+ament_export_libraries(pose_utils)
+ament_package()
