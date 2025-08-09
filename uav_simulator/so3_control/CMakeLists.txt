@@ -12,7 +12,6 @@ find_package(quadrotor_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(cmake_utils REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 include_directories(
@@ -30,7 +29,6 @@ ament_target_dependencies(SO3Control
   quadrotor_msgs
   tf2
   tf2_geometry_msgs
-  cmake_utils
   sensor_msgs
 )
 target_link_libraries(so3_control_nodelet SO3Control)
