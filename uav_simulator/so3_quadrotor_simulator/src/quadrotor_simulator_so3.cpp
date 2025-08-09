@@ -306,6 +306,7 @@ main(int argc, char** argv)
     r.sleep();
   }
 
+  rclcpp::shutdown();
   return 0;
 }
 
