@@ -27,87 +27,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef MULTI_PROB_MAP_DISPLAY_H
-#define MULTI_PROB_MAP_DISPLAY_H
+#ifndef RVIZ_GOAL_TOOL_H
+#define RVIZ_GOAL_TOOL_H
 
-#include <OGRE/OgreMaterial.h>
-#include <OGRE/OgreTexture.h>
-#include <OGRE/OgreVector3.h>
+#ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
+#include <QObject>
 
-#include <nav_msgs/MapMetaData.h>
-#include <ros/time.h>
+#include <rclcpp/rclcpp.hpp>
 
-#include <multi_map_server/MultiOccupancyGrid.h>
-#include <nav_msgs/OccupancyGrid.h>
-
-#include "rviz/display.h"
-
-namespace Ogre
-{
-class ManualObject;
-}
+#include "rviz_plugins/pose_tool.h"
+#endif
 
 namespace rviz
 {
+class Arrow;
+class DisplayContext;
+class StringProperty;
 
-class FloatProperty;
-class IntProperty;
-class Property;
-class QuaternionProperty;
-class RosTopicProperty;
-class VectorProperty;
-
-/**
- * \class MultiProbMapDisplay
- * \brief Displays a map along the XY plane.
- */
-class MultiProbMapDisplay : public Display
+class Goal3DTool: public Pose3DTool
 {
-  Q_OBJECT
+Q_OBJECT
 public:
-  MultiProbMapDisplay();
-  virtual ~MultiProbMapDisplay();
-
-  // Overrides from Display
+  Goal3DTool();
+  virtual ~Goal3DTool() {}
   virtual void onInitialize();
-  virtual void reset();
-  virtual void update(float wall_dt, float ros_dt);
-
-protected Q_SLOTS:
-  void updateTopic();
-  void updateDrawUnder();
 
 protected:
-  // overrides from Display
-  virtual void onEnable();
-  virtual void onDisable();
+  virtual void onPoseSet(double x, double y, double z, double theta);
 
-  virtual void subscribe();
-  virtual void unsubscribe();
+private Q_SLOTS:
+  void updateTopic();
 
-  void incomingMap(const multi_map_server::MultiOccupancyGrid::ConstPtr& msg);
+private:
+  ros::NodeHandle nh_;
+  ros::Publisher pub_;
 
-  void clear();
-
-  std::vector<Ogre::ManualObject*> manual_object_;
-  std::vector<Ogre::TexturePtr>    texture_;
-  std::vector<Ogre::MaterialPtr>   material_;
-
-  bool loaded_;
-
-  std::string topic_;
-
-  ros::Subscriber map_sub_;
-
-  RosTopicProperty* topic_property_;
-  Property*         draw_under_property_;
-
-  multi_map_server::MultiOccupancyGrid::ConstPtr updated_map_;
-  multi_map_server::MultiOccupancyGrid::ConstPtr current_map_;
-  boost::mutex                                   mutex_;
-  bool                                           new_map_;
+  StringProperty* topic_property_;
 };
 
-} // namespace rviz
+}
 
 #endif
+
+

@@ -27,19 +27,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef AERIAL_MAP_DISPLAY_H
-#define AERIAL_MAP_DISPLAY_H
+#ifndef MULTI_PROB_MAP_DISPLAY_H
+#define MULTI_PROB_MAP_DISPLAY_H
 
-#include <OGRE/OgreTexture.h>
-#include <OGRE/OgreMaterial.h>
-#include <OGRE/OgreVector3.h>
+#include <OgreMaterial.h>
+#include <OgreTexture.h>
+#include <OgreVector3.h>
 
-#include <nav_msgs/MapMetaData.h>
-#include <ros/time.h>
+#include <nav_msgs/msg/map_meta_data.hpp>
+#include <rclcpp/rclcpp.hpp>
 
-#include <nav_msgs/OccupancyGrid.h>
+#include <multi_map_msgs/msg/multi_occupancy_grid.hpp>
+#include <nav_msgs/msg/occupancy_grid.hpp>
 
-#include "rviz/display.h"
+#include "rviz_common/display.hpp"
 
 namespace Ogre
 {
@@ -57,33 +58,24 @@ class RosTopicProperty;
 class VectorProperty;
 
 /**
- * \class AerialMapDisplay
+ * \class MultiProbMapDisplay
  * \brief Displays a map along the XY plane.
  */
-class AerialMapDisplay: public Display
+class MultiProbMapDisplay : public Display
 {
-Q_OBJECT
+  Q_OBJECT
 public:
-  AerialMapDisplay();
-  virtual ~AerialMapDisplay();
+  MultiProbMapDisplay();
+  virtual ~MultiProbMapDisplay();
 
   // Overrides from Display
   virtual void onInitialize();
-  virtual void fixedFrameChanged();
   virtual void reset();
-  virtual void update( float wall_dt, float ros_dt );
-
-  float getResolution() { return resolution_; }
-  int getWidth() { return width_; }
-  int getHeight() { return height_; }
-  Ogre::Vector3 getPosition() { return position_; }
-  Ogre::Quaternion getOrientation() { return orientation_; }
+  virtual void update(float wall_dt, float ros_dt);
 
 protected Q_SLOTS:
-  void updateAlpha();
   void updateTopic();
   void updateDrawUnder();
-
 
 protected:
   // overrides from Display
@@ -93,42 +85,29 @@ protected:
   virtual void subscribe();
   virtual void unsubscribe();
 
-  void incomingAerialMap(const nav_msgs::OccupancyGrid::ConstPtr& msg);
+  void incomingMap(const multi_map_server::MultiOccupancyGrid::ConstPtr& msg);
 
   void clear();
 
-  void transformAerialMap();
+  std::vector<Ogre::ManualObject*> manual_object_;
+  std::vector<Ogre::TexturePtr>    texture_;
+  std::vector<Ogre::MaterialPtr>   material_;
 
-  Ogre::ManualObject* manual_object_;
-  Ogre::TexturePtr texture_;
-  Ogre::MaterialPtr material_;
   bool loaded_;
 
   std::string topic_;
-  float resolution_;
-  int width_;
-  int height_;
-  Ogre::Vector3 position_;
-  Ogre::Quaternion orientation_;
-  std::string frame_;
 
   ros::Subscriber map_sub_;
 
   RosTopicProperty* topic_property_;
-  FloatProperty* resolution_property_;
-  IntProperty* width_property_;
-  IntProperty* height_property_;
-  VectorProperty* position_property_;
-  QuaternionProperty* orientation_property_;
-  FloatProperty* alpha_property_;
-  Property* draw_under_property_;
+  Property*         draw_under_property_;
 
-  nav_msgs::OccupancyGrid::ConstPtr updated_map_;
-  nav_msgs::OccupancyGrid::ConstPtr current_map_;
-  boost::mutex mutex_;
-  bool new_map_;
+  multi_map_server::MultiOccupancyGrid::ConstPtr updated_map_;
+  multi_map_server::MultiOccupancyGrid::ConstPtr current_map_;
+  boost::mutex                                   mutex_;
+  bool                                           new_map_;
 };
 
 } // namespace rviz
 
- #endif
+#endif

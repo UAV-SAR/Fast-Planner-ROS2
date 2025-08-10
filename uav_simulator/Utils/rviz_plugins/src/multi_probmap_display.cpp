@@ -29,28 +29,28 @@
 
 #include <boost/bind.hpp>
 
-#include <OGRE/OgreManualObject.h>
-#include <OGRE/OgreMaterialManager.h>
-#include <OGRE/OgreSceneManager.h>
-#include <OGRE/OgreSceneNode.h>
-#include <OGRE/OgreTextureManager.h>
+#include <OgreManualObject.h>
+#include <OgreMaterialManager.h>
+#include <OgreSceneManager.h>
+#include <OgreSceneNode.h>
+#include <OgreTextureManager.h>
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
-#include <tf/transform_listener.h>
+#include <tf2_ros/transform_listener.h>
 
-#include "rviz/frame_manager.h"
-#include "rviz/ogre_helpers/grid.h"
-#include "rviz/properties/float_property.h"
-#include "rviz/properties/int_property.h"
-#include "rviz/properties/property.h"
-#include "rviz/properties/quaternion_property.h"
-#include "rviz/properties/ros_topic_property.h"
-#include "rviz/properties/vector_property.h"
-#include "rviz/validate_floats.h"
-#include "rviz/display_context.h"
+#include "rviz_common/frame_manager_iface.hpp"
+#include "rviz_rendering/objects/grid.hpp"
+#include "rviz_common/properties/float_property.hpp"
+#include "rviz_common/properties/int_property.hpp"
+#include "rviz_common/properties/property.hpp"
+#include "rviz_common/properties/quaternion_property.hpp"
+#include "rviz_common/properties/ros_topic_property.hpp"
+#include "rviz_common/properties/vector_property.hpp"
+#include "rviz_common/validate_floats.hpp"
+#include "rviz_common/display_context.hpp"
 
-#include "multi_probmap_display.h"
+#include "rviz_plugins/multi_probmap_display.h"
 
 namespace rviz
 {
@@ -361,5 +361,5 @@ void MultiProbMapDisplay::reset()
 
 } // namespace rviz
 
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 PLUGINLIB_EXPORT_CLASS( rviz::MultiProbMapDisplay, rviz::Display )

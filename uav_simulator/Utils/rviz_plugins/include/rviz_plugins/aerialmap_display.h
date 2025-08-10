@@ -27,19 +27,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef PROB_MAP_DISPLAY_H
-#define PROB_MAP_DISPLAY_H
+#ifndef AERIAL_MAP_DISPLAY_H
+#define AERIAL_MAP_DISPLAY_H
 
-#include <OGRE/OgreTexture.h>
-#include <OGRE/OgreMaterial.h>
-#include <OGRE/OgreVector3.h>
+#include <OgreTexture.h>
+#include <OgreMaterial.h>
+#include <OgreVector3.h>
 
-#include <nav_msgs/MapMetaData.h>
-#include <ros/time.h>
+#include <nav_msgs/msg/map_meta_data.hpp>
+#include <rclcpp/rclcpp.hpp>
 
-#include <nav_msgs/OccupancyGrid.h>
+#include <nav_msgs/msg/occupancy_grid.hpp>
 
-#include "rviz/display.h"
+#include <rviz_common/display.hpp>
 
 namespace Ogre
 {
@@ -57,15 +57,15 @@ class RosTopicProperty;
 class VectorProperty;
 
 /**
- * \class ProbMapDisplay
+ * \class AerialMapDisplay
  * \brief Displays a map along the XY plane.
  */
-class ProbMapDisplay: public Display
+class AerialMapDisplay: public Display
 {
 Q_OBJECT
 public:
-  ProbMapDisplay();
-  virtual ~ProbMapDisplay();
+  AerialMapDisplay();
+  virtual ~AerialMapDisplay();
 
   // Overrides from Display
   virtual void onInitialize();
@@ -93,11 +93,11 @@ protected:
   virtual void subscribe();
   virtual void unsubscribe();
 
-  void incomingMap(const nav_msgs::OccupancyGrid::ConstPtr& msg);
+  void incomingAerialMap(const nav_msgs::OccupancyGrid::ConstPtr& msg);
 
   void clear();
 
-  void transformMap();
+  void transformAerialMap();
 
   Ogre::ManualObject* manual_object_;
   Ogre::TexturePtr texture_;

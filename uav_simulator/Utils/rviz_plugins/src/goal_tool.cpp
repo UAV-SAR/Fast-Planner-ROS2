@@ -27,14 +27,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <tf/transform_listener.h>
+#include <tf2_ros/transform_listener.h>
 
-#include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/msg/pose_stamped.hpp>
 
-#include "rviz/display_context.h"
-#include "rviz/properties/string_property.h"
+#include "rviz_common/display_context.hpp"
+#include "rviz_common/properties/string_property.hpp"
 
-#include "goal_tool.h"
+#include "rviz_plugins/goal_tool.h"
 
 namespace rviz
 {
@@ -77,5 +77,5 @@ void Goal3DTool::onPoseSet(double x, double y, double z, double theta)
 
 } // end namespace rviz
 
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 PLUGINLIB_EXPORT_CLASS( rviz::Goal3DTool, rviz::Tool )

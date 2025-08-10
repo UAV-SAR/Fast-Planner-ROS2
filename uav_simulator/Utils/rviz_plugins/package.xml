@@ -15,14 +15,20 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
   <depend>rviz_common</depend>
   <depend>multi_map_server</depend>
+  <depend>multi_map_msgs</depend>
   <depend>nav_msgs</depend>
+  <depend>rviz_ogre_vendor</depend>
+  <depend>tf2_ros</depend>
+  <depend>rviz_default_plugins</depend>
+  <depend>rviz_rendering</depend>
+  <depend>pluginlib</depend>
   <depend>qtbase5-dev</depend>
   <depend>libqt5-core</depend>
   <depend>libqt5-gui</depend>
   <depend>libqt5-widgets</depend>
-  <depend>rviz_ogre_vendor</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
