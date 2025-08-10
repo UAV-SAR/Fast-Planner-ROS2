@@ -30,37 +30,48 @@
 #ifndef AERIAL_MAP_DISPLAY_H
 #define AERIAL_MAP_DISPLAY_H
 
+#include <rclcpp/rclcpp.hpp>
+
+#include <tf2_ros/transform_listener.h>
+
+#include <rviz_common/display.hpp>
+#include "rviz_common/display_context.hpp"
+#include "rviz_common/frame_manager_iface.hpp"
+#include "rviz_rendering/objects/grid.hpp"
+#include "rviz_common/properties/float_property.hpp"
+#include "rviz_common/properties/int_property.hpp"
+#include "rviz_common/properties/property.hpp"
+#include "rviz_common/properties/quaternion_property.hpp"
+#include "rviz_common/properties/ros_topic_property.hpp"
+#include "rviz_common/properties/vector_property.hpp"
+#include "rviz_common/validate_floats.hpp"
+
 #include <OgreTexture.h>
 #include <OgreMaterial.h>
 #include <OgreVector3.h>
+#include <OgreManualObject.h>
+#include <OgreMaterialManager.h>
+#include <OgreSceneManager.h>
+#include <OgreSceneNode.h>
+#include <OgreTextureManager.h>
+#include <OgreTechnique.h>
 
 #include <nav_msgs/msg/map_meta_data.hpp>
-#include <rclcpp/rclcpp.hpp>
-
 #include <nav_msgs/msg/occupancy_grid.hpp>
-
-#include <rviz_common/display.hpp>
 
 namespace Ogre
 {
-class ManualObject;
+  class ManualObject;
 }
 
-namespace rviz
+namespace rviz_plugins
 {
-
-class FloatProperty;
-class IntProperty;
-class Property;
-class QuaternionProperty;
-class RosTopicProperty;
-class VectorProperty;
 
 /**
  * \class AerialMapDisplay
  * \brief Displays a map along the XY plane.
  */
-class AerialMapDisplay: public Display
+class AerialMapDisplay: public rviz_common::Display
 {
 Q_OBJECT
 public:
@@ -93,7 +104,7 @@ protected:
   virtual void subscribe();
   virtual void unsubscribe();
 
-  void incomingAerialMap(const nav_msgs::OccupancyGrid::ConstPtr& msg);
+  void incomingAerialMap(const nav_msgs::msg::OccupancyGrid::SharedPtr msg);
 
   void clear();
 
@@ -112,21 +123,23 @@ protected:
   Ogre::Quaternion orientation_;
   std::string frame_;
 
-  ros::Subscriber map_sub_;
+  rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr map_sub_;
 
-  RosTopicProperty* topic_property_;
-  FloatProperty* resolution_property_;
-  IntProperty* width_property_;
-  IntProperty* height_property_;
-  VectorProperty* position_property_;
-  QuaternionProperty* orientation_property_;
-  FloatProperty* alpha_property_;
-  Property* draw_under_property_;
+  rviz_common::properties::RosTopicProperty* topic_property_;
+  rviz_common::properties::FloatProperty* resolution_property_;
+  rviz_common::properties::IntProperty* width_property_;
+  rviz_common::properties::IntProperty* height_property_;
+  rviz_common::properties::VectorProperty* position_property_;
+  rviz_common::properties::QuaternionProperty* orientation_property_;
+  rviz_common::properties::FloatProperty* alpha_property_;
+  rviz_common::properties::Property* draw_under_property_;
 
-  nav_msgs::OccupancyGrid::ConstPtr updated_map_;
-  nav_msgs::OccupancyGrid::ConstPtr current_map_;
-  boost::mutex mutex_;
+  nav_msgs::msg::OccupancyGrid::SharedPtr updated_map_;
+  nav_msgs::msg::OccupancyGrid::SharedPtr current_map_;
+  std::mutex mutex_;
   bool new_map_;
+
+  rclcpp::Node::SharedPtr plugin_node_;
 };
 
 } // namespace rviz

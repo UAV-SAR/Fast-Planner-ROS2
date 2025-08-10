@@ -27,32 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <boost/bind.hpp>
-
-#include <OgreManualObject.h>
-#include <OgreMaterialManager.h>
-#include <OgreSceneManager.h>
-#include <OgreSceneNode.h>
-#include <OgreTextureManager.h>
-
-#include <rclcpp/rclcpp.hpp>
-
-#include <tf2_ros/transform_listener.h>
-
-#include "rviz_common/display_context.hpp"
-#include "rviz_common/frame_manager_iface.hpp"
-#include "rviz_rendering/objects/grid.hpp"
-#include "rviz_common/properties/float_property.hpp"
-#include "rviz_common/properties/int_property.hpp"
-#include "rviz_common/properties/property.hpp"
-#include "rviz_common/properties/quaternion_property.hpp"
-#include "rviz_common/properties/ros_topic_property.hpp"
-#include "rviz_common/properties/vector_property.hpp"
-#include "rviz_common/validate_floats.hpp"
 
 #include "rviz_plugins/aerialmap_display.h"
 
-namespace rviz
+namespace rviz_plugins
 {
 
 AerialMapDisplay::AerialMapDisplay()
@@ -67,44 +45,43 @@ AerialMapDisplay::AerialMapDisplay()
   , orientation_(Ogre::Quaternion::IDENTITY)
   , new_map_(false)
 {
-  topic_property_ = new RosTopicProperty(
-    "Topic", "", QString::fromStdString(
-                   ros::message_traits::datatype<nav_msgs::OccupancyGrid>()),
+  topic_property_ = new rviz_common::properties::RosTopicProperty(
+    "Topic", "", "nav_msgs/msg/OccupancyGrid",
     "nav_msgs::OccupancyGrid topic to subscribe to.", this,
     SLOT(updateTopic()));
 
-  alpha_property_ = new FloatProperty(
+  alpha_property_ = new rviz_common::properties::FloatProperty(
     "Alpha", 0.7, "Amount of transparency to apply to the map.", this,
     SLOT(updateAlpha()));
   alpha_property_->setMin(0);
   alpha_property_->setMax(1);
 
   draw_under_property_ =
-    new Property("Draw Behind", false,
+    new rviz_common::properties::Property("Draw Behind", false,
                  "Rendering option, controls whether or not the map is always"
                  " drawn behind everything else.",
                  this, SLOT(updateDrawUnder()));
 
-  resolution_property_ = new FloatProperty(
+  resolution_property_ = new rviz_common::properties::FloatProperty(
     "Resolution", 0, "Resolution of the map. (not editable)", this);
   resolution_property_->setReadOnly(true);
 
-  width_property_ = new IntProperty(
+  width_property_ = new rviz_common::properties::IntProperty(
     "Width", 0, "Width of the map, in meters. (not editable)", this);
   width_property_->setReadOnly(true);
 
-  height_property_ = new IntProperty(
+  height_property_ = new rviz_common::properties::IntProperty(
     "Height", 0, "Height of the map, in meters. (not editable)", this);
   height_property_->setReadOnly(true);
 
-  position_property_ = new VectorProperty(
+  position_property_ = new rviz_common::properties::VectorProperty(
     "Position", Ogre::Vector3::ZERO,
     "Position of the bottom left corner of the map, in meters. (not editable)",
     this);
   position_property_->setReadOnly(true);
 
   orientation_property_ =
-    new QuaternionProperty("Orientation", Ogre::Quaternion::IDENTITY,
+    new rviz_common::properties::QuaternionProperty("Orientation", Ogre::Quaternion::IDENTITY,
                            "Orientation of the map. (not editable)", this);
   orientation_property_->setReadOnly(true);
 }
@@ -118,6 +95,7 @@ AerialMapDisplay::~AerialMapDisplay()
 void
 AerialMapDisplay::onInitialize()
 {
+  plugin_node_ = context_->getRosNodeAbstraction().lock()->get_raw_node();
   static int        count = 0;
   std::stringstream ss;
   ss << "AerialMapObjectMaterial" << count++;
@@ -158,13 +136,13 @@ AerialMapDisplay::subscribe()
     try
     {
       map_sub_ =
-        update_nh_.subscribe(topic_property_->getTopicStd(), 1,
-                             &AerialMapDisplay::incomingAerialMap, this);
-      setStatus(StatusProperty::Ok, "Topic", "OK");
+        plugin_node_->create_subscription<nav_msgs::msg::OccupancyGrid>(topic_property_->getTopicStd(), 1,
+                             std::bind(&AerialMapDisplay::incomingAerialMap, this, std::placeholders::_1));
+      setStatus(rviz_common::properties::StatusProperty::Ok, "Topic", "OK");
     }
-    catch (ros::Exception& e)
+    catch (const std::exception& e)
     {
-      setStatus(StatusProperty::Error, "Topic",
+      setStatus(rviz_common::properties::StatusProperty::Error, "Topic",
                 QString("Error subscribing: ") + e.what());
     }
   }
@@ -173,7 +151,7 @@ AerialMapDisplay::subscribe()
 void
 AerialMapDisplay::unsubscribe()
 {
-  map_sub_.shutdown();
+  map_sub_.reset();
 }
 
 void
@@ -241,7 +219,7 @@ AerialMapDisplay::updateTopic()
 void
 AerialMapDisplay::clear()
 {
-  setStatus(StatusProperty::Warn, "Message", "No map received");
+  setStatus(rviz_common::properties::StatusProperty::Warn, "Message", "No map received");
 
   if (!loaded_)
   {
@@ -252,7 +230,7 @@ AerialMapDisplay::clear()
   manual_object_ = NULL;
 
   std::string tex_name = texture_->getName();
-  texture_.setNull();
+  texture_.reset();
   Ogre::TextureManager::getSingleton().unload(tex_name);
 
   loaded_ = false;
@@ -270,7 +248,7 @@ void
 AerialMapDisplay::update(float wall_dt, float ros_dt)
 {
   {
-    boost::mutex::scoped_lock lock(mutex_);
+    std::lock_guard<std::mutex> lock(mutex_);
 
     current_map_ = updated_map_;
   }
@@ -299,16 +277,16 @@ AerialMapDisplay::update(float wall_dt, float ros_dt)
     std::stringstream ss;
     ss << "AerialMap is zero-sized (" << current_map_->info.width << "x"
        << current_map_->info.height << ")";
-    setStatus(StatusProperty::Error, "AerialMap",
+    setStatus(rviz_common::properties::StatusProperty::Error, "AerialMap",
               QString::fromStdString(ss.str()));
     return;
   }
 
   clear();
 
-  setStatus(StatusProperty::Ok, "Message", "AerialMap received");
+  setStatus(rviz_common::properties::StatusProperty::Ok, "Message", "AerialMap received");
 
-  ROS_DEBUG("Received a %d X %d map @ %.3f m/pix\n", current_map_->info.width,
+  RCLCPP_DEBUG(rclcpp::get_logger("AerialMapDisplay"), "Received a %d X %d map @ %.3f m/pix\n", current_map_->info.width,
             current_map_->info.height, current_map_->info.resolution);
 
   float resolution = current_map_->info.resolution;
@@ -342,7 +320,7 @@ AerialMapDisplay::update(float wall_dt, float ros_dt)
     ss << "Data size doesn't match width*height: width = " << width
        << ", height = " << height
        << ", data size = " << current_map_->data.size();
-    setStatus(StatusProperty::Error, "AerialMap",
+    setStatus(rviz_common::properties::StatusProperty::Error, "AerialMap",
               QString::fromStdString(ss.str()));
     map_status_set = true;
 
@@ -373,8 +351,7 @@ AerialMapDisplay::update(float wall_dt, float ros_dt)
     pixels[pixel_index] = current_map_->data[pixel_index];
   }
 
-  Ogre::DataStreamPtr pixel_stream;
-  pixel_stream.bind(new Ogre::MemoryDataStream(pixels, pixels_size));
+  Ogre::DataStreamPtr pixel_stream = Ogre::DataStreamPtr(new Ogre::MemoryDataStream(pixels, pixels_size));
   static int        tex_count = 0;
   std::stringstream ss;
   ss << "AerialMapTexture" << tex_count++;
@@ -386,7 +363,7 @@ AerialMapDisplay::update(float wall_dt, float ros_dt)
 
     if (!map_status_set)
     {
-      setStatus(StatusProperty::Ok, "AerialMap", "AerialMap OK");
+      setStatus(rviz_common::properties::StatusProperty::Ok, "AerialMap", "AerialMap OK");
     }
   }
   catch (Ogre::RenderingAPIException&)
@@ -414,11 +391,11 @@ AerialMapDisplay::update(float wall_dt, float ros_dt)
             "Downsampled from ["
          << width << "x" << height << "] to [" << fwidth << "x" << fheight
          << "]";
-      setStatus(StatusProperty::Ok, "AerialMap",
+      setStatus(rviz_common::properties::StatusProperty::Ok, "AerialMap",
                 QString::fromStdString(ss.str()));
     }
 
-    ROS_WARN("Failed to create full-size map texture, likely because your "
+    RCLCPP_WARN(rclcpp::get_logger("AerialMapDisplay"), "Failed to create full-size map texture, likely because your "
              "graphics card does not support textures of size > 2048.  "
              "Downsampling to [%d x %d]...",
              (int)fwidth, (int)fheight);
@@ -514,11 +491,11 @@ AerialMapDisplay::update(float wall_dt, float ros_dt)
 
 void
 AerialMapDisplay::incomingAerialMap(
-  const nav_msgs::OccupancyGrid::ConstPtr& msg)
+  const nav_msgs::msg::OccupancyGrid::SharedPtr msg)
 {
 
   updated_map_ = msg;
-  boost::mutex::scoped_lock lock(mutex_);
+  std::lock_guard<std::mutex> lock(mutex_);
   new_map_ = true;
 }
 
@@ -533,18 +510,18 @@ AerialMapDisplay::transformAerialMap()
   Ogre::Vector3    position;
   Ogre::Quaternion orientation;
   if (!context_->getFrameManager()->transform(
-        frame_, ros::Time(), current_map_->info.origin, position, orientation))
+        frame_, rclcpp::Time(), current_map_->info.origin, position, orientation))
   {
-    ROS_DEBUG("Error transforming map '%s' from frame '%s' to frame '%s'",
+    RCLCPP_DEBUG(rclcpp::get_logger("AerialMapDisplay"), "Error transforming map '%s' from frame '%s' to frame '%s'",
               qPrintable(getName()), frame_.c_str(), qPrintable(fixed_frame_));
 
-    setStatus(StatusProperty::Error, "Transform",
+    setStatus(rviz_common::properties::StatusProperty::Error, "Transform",
               "No transform from [" + QString::fromStdString(frame_) +
                 "] to [" + fixed_frame_ + "]");
   }
   else
   {
-    setStatus(StatusProperty::Ok, "Transform", "Transform OK");
+    setStatus(rviz_common::properties::StatusProperty::Ok, "Transform", "Transform OK");
   }
 
   scene_node_->setPosition(position);
@@ -570,4 +547,4 @@ AerialMapDisplay::reset()
 } // namespace rviz
 
 #include <pluginlib/class_list_macros.hpp>
-PLUGINLIB_EXPORT_CLASS(rviz::AerialMapDisplay, rviz::Display)
+PLUGINLIB_EXPORT_CLASS(rviz_plugins::AerialMapDisplay, rviz_common::Display)
