@@ -30,19 +30,20 @@
 #ifndef RVIZ_GOAL_TOOL_H
 #define RVIZ_GOAL_TOOL_H
 
-#ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
+#include "rviz_plugins/goal_tool.h"
+#include "rviz_plugins/pose_tool.h"
+
 #include <QObject>
 
 #include <rclcpp/rclcpp.hpp>
+#include <tf2_ros/transform_listener.h>
+#include <geometry_msgs/msg/pose_stamped.hpp>
 
-#include "rviz_plugins/pose_tool.h"
-#endif
+#include "rviz_common/display_context.hpp"
+#include "rviz_common/properties/string_property.hpp"
 
-namespace rviz
+namespace rviz_plugins
 {
-class Arrow;
-class DisplayContext;
-class StringProperty;
 
 class Goal3DTool: public Pose3DTool
 {
@@ -59,10 +60,10 @@ private Q_SLOTS:
   void updateTopic();
 
 private:
-  ros::NodeHandle nh_;
-  ros::Publisher pub_;
+  rclcpp::Node::SharedPtr nh_;
+  rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pub_;
 
-  StringProperty* topic_property_;
+  rviz_common::properties::StringProperty* topic_property_;
 };
 
 }
