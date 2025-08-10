@@ -9,6 +9,7 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rviz_common REQUIRED)
 find_package(rviz_default_plugins REQUIRED)
+find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(multi_map_server REQUIRED)
 find_package(multi_map_msgs REQUIRED)
@@ -49,6 +50,7 @@ ament_target_dependencies(${PROJECT_NAME}
   multi_map_msgs
   nav_msgs
   rviz_ogre_vendor
+  tf2
   tf2_ros
   rviz_default_plugins
   rviz_rendering

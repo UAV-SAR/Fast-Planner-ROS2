@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <boost/bind.hpp>
+#include "rviz_plugins/multi_probmap_display.h"
 
 #include <OgreManualObject.h>
 #include <OgreMaterialManager.h>
@@ -38,6 +38,7 @@
 #include <rclcpp/rclcpp.hpp>
 
 #include <tf2_ros/transform_listener.h>
+#include <tf2/utils.hpp>
 
 #include "rviz_common/frame_manager_iface.hpp"
 #include "rviz_rendering/objects/grid.hpp"
@@ -50,9 +51,7 @@
 #include "rviz_common/validate_floats.hpp"
 #include "rviz_common/display_context.hpp"
 
-#include "rviz_plugins/multi_probmap_display.h"
-
-namespace rviz
+namespace rviz_plugins
 {
 
 MultiProbMapDisplay::MultiProbMapDisplay()
@@ -60,12 +59,12 @@ MultiProbMapDisplay::MultiProbMapDisplay()
   , loaded_( false )
   , new_map_(false)
 {
-  topic_property_ = new RosTopicProperty( "Topic", "",
-                                          QString::fromStdString( ros::message_traits::datatype<multi_map_server::MultiOccupancyGrid>() ),
-                                          "multi_map_server::MultiOccupancyGrid topic to subscribe to.",
+  topic_property_ = new rviz_common::properties::RosTopicProperty( "Topic", "",
+                                          "multi_map_msgs/msg/MultiOccupancyGrid",
+                                          "multi_map_msgs::msg::MultiOccupancyGrid topic to subscribe to.",
                                           this, SLOT( updateTopic() ));
 
-  draw_under_property_ = new Property( "Draw Behind", false,
+  draw_under_property_ = new rviz_common::properties::Property( "Draw Behind", false,
                                        "Rendering option, controls whether or not the map is always"
                                        " drawn behind everything else.",
                                        this, SLOT( updateDrawUnder() ));
@@ -79,6 +78,7 @@ MultiProbMapDisplay::~MultiProbMapDisplay()
 
 void MultiProbMapDisplay::onInitialize()
 {
+  update_nh_ = context_->getRosNodeAbstraction().lock()->get_raw_node();
 }
 
 void MultiProbMapDisplay::onEnable()
@@ -103,19 +103,20 @@ void MultiProbMapDisplay::subscribe()
   {
     try
     {
-      map_sub_ = update_nh_.subscribe( topic_property_->getTopicStd(), 1, &MultiProbMapDisplay::incomingMap, this );
-      setStatus( StatusProperty::Ok, "Topic", "OK" );
+      map_sub_ = update_nh_->create_subscription<multi_map_msgs::msg::MultiOccupancyGrid>(
+        topic_property_->getTopicStd(), 1, std::bind(&MultiProbMapDisplay::incomingMap, this, std::placeholders::_1));
+      setStatus( rviz_common::properties::StatusProperty::Ok, "Topic", "OK" );
     }
-    catch( ros::Exception& e )
+    catch( std::exception& e )
     {
-      setStatus( StatusProperty::Error, "Topic", QString( "Error subscribing: " ) + e.what() );
+      setStatus( rviz_common::properties::StatusProperty::Error, "Topic", QString( "Error subscribing: " ) + e.what() );
     }
   }
 }
 
 void MultiProbMapDisplay::unsubscribe()
 {
-  map_sub_.shutdown();
+  map_sub_.reset();
 }
 
 void MultiProbMapDisplay::updateDrawUnder()
@@ -143,7 +144,7 @@ void MultiProbMapDisplay::updateTopic()
 
 void MultiProbMapDisplay::clear()
 {
-  setStatus( StatusProperty::Warn, "Message", "No map received" );
+  setStatus( rviz_common::properties::StatusProperty::Warn, "Message", "No map received" );
 
   if( !loaded_ )
   {
@@ -154,7 +155,7 @@ void MultiProbMapDisplay::clear()
   {
     scene_manager_->destroyManualObject( manual_object_[k] );
     std::string tex_name = texture_[k]->getName();
-    texture_[k].setNull();
+    texture_[k].reset();
     Ogre::TextureManager::getSingleton().unload( tex_name );
   }
   manual_object_.clear();
@@ -169,7 +170,7 @@ void MultiProbMapDisplay::clear()
 void MultiProbMapDisplay::update( float wall_dt, float ros_dt )
 {  
   {
-    boost::mutex::scoped_lock lock(mutex_);
+    std::lock_guard<std::mutex> lock(mutex_);
     current_map_ = updated_map_;
   }
 
@@ -184,9 +185,9 @@ void MultiProbMapDisplay::update( float wall_dt, float ros_dt )
   for (unsigned int k = 0; k < current_map_->maps.size(); k++)
   {
     if (current_map_->maps[k].data.empty())
-      continue;    
-    setStatus( StatusProperty::Ok, "Message", "Map received" );  
-    
+      continue;
+    setStatus( rviz_common::properties::StatusProperty::Ok, "Message", "Map received" );
+
     // Map info
     float resolution = current_map_->maps[k].info.resolution;  
     int   width      = current_map_->maps[k].info.width;
@@ -220,8 +221,7 @@ void MultiProbMapDisplay::update( float wall_dt, float ros_dt )
 */
     // Set texture
     //t[1] = ros::Time::now();
-    Ogre::DataStreamPtr pixel_stream;
-    pixel_stream.bind( new Ogre::MemoryDataStream( pixels, pixels_size ));
+    Ogre::DataStreamPtr pixel_stream = Ogre::DataStreamPtr(new Ogre::MemoryDataStream(pixels, pixels_size));
     static int tex_count = 0;
     std::stringstream ss1;
     ss1 << "MultiMapTexture" << tex_count++;
@@ -230,11 +230,11 @@ void MultiProbMapDisplay::update( float wall_dt, float ros_dt )
     _texture_ = Ogre::TextureManager::getSingleton().loadRawData( ss1.str(), Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
                                                                   pixel_stream, width, height, Ogre::PF_L8, Ogre::TEX_TYPE_2D, 0);   
     //t[3] = ros::Time::now();                                                                                                                                                                                   
-    texture_.push_back(_texture_);                                                
-    delete [] pixels;     
-    setStatus( StatusProperty::Ok, "Map", "Map OK" );      
-    //t[4] = ros::Time::now();     
-    
+    texture_.push_back(_texture_);
+    delete [] pixels;
+    setStatus( rviz_common::properties::StatusProperty::Ok, "Map", "Map OK" );
+    //t[4] = ros::Time::now();
+
     // Set material
     static int material_count = 0;
     std::stringstream ss0;
@@ -266,12 +266,12 @@ void MultiProbMapDisplay::update( float wall_dt, float ros_dt )
     Ogre::ManualObject* _manual_object_ = scene_manager_->createManualObject( ss2.str() );
     manual_object_.push_back(_manual_object_);
     scene_node_->attachObject( manual_object_.back() );    
-    float yo  = tf::getYaw(current_map_->origins[k].orientation);
+    float yo  = tf2::getYaw(current_map_->origins[k].orientation);
     float co  = cos(yo);
     float so  = sin(yo);
     float dxo = current_map_->origins[k].position.x;
     float dyo = current_map_->origins[k].position.y;     
-    float ym  = tf::getYaw(current_map_->maps[k].info.origin.orientation);
+    float ym  = tf2::getYaw(current_map_->maps[k].info.origin.orientation);
     float dxm = current_map_->maps[k].info.origin.position.x;
     float dym = current_map_->maps[k].info.origin.position.y;  
     float yaw = yo + ym;
@@ -345,10 +345,10 @@ void MultiProbMapDisplay::update( float wall_dt, float ros_dt )
 
 // ***********************************************************************************************************************************
 
-void MultiProbMapDisplay::incomingMap(const multi_map_server::MultiOccupancyGrid::ConstPtr& msg)
+void MultiProbMapDisplay::incomingMap(const multi_map_msgs::msg::MultiOccupancyGrid::SharedPtr msg)
 {
   updated_map_ = msg;
-  boost::mutex::scoped_lock lock(mutex_);
+  std::lock_guard<std::mutex> lock(mutex_);
   new_map_ = true;
 }
 
@@ -362,4 +362,4 @@ void MultiProbMapDisplay::reset()
 } // namespace rviz
 
 #include <pluginlib/class_list_macros.hpp>
-PLUGINLIB_EXPORT_CLASS( rviz::MultiProbMapDisplay, rviz::Display )
+PLUGINLIB_EXPORT_CLASS( rviz_plugins::MultiProbMapDisplay, rviz_common::Display )
