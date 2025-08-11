@@ -510,7 +510,7 @@ AerialMapDisplay::transformAerialMap()
   Ogre::Vector3    position;
   Ogre::Quaternion orientation;
   if (!context_->getFrameManager()->transform(
-        frame_, rclcpp::Time(), current_map_->info.origin, position, orientation))
+        frame_, plugin_node_->get_clock()->now(), current_map_->info.origin, position, orientation))
   {
     RCLCPP_DEBUG(rclcpp::get_logger("AerialMapDisplay"), "Error transforming map '%s' from frame '%s' to frame '%s'",
               qPrintable(getName()), frame_.c_str(), qPrintable(fixed_frame_));

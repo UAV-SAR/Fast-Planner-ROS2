@@ -35,7 +35,7 @@ target_link_libraries(quadrotor_simulator_so3
 )
 
 install(TARGETS quadrotor_simulator_so3 quadrotor_dynamics
-  RUNTIME DESTINATION bin
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
 )
@@ -43,6 +43,11 @@ install(TARGETS quadrotor_simulator_so3 quadrotor_dynamics
 install(DIRECTORY include/
   DESTINATION include
   FILES_MATCHING PATTERN "*.h"
+)
+
+install(FILES 
+  launch/simulator_launch.py
+  DESTINATION share/${PROJECT_NAME}/launch
 )
 
 ament_export_include_directories(include)

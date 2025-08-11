@@ -34,7 +34,7 @@ ament_target_dependencies(odom_visualization
 target_link_libraries(odom_visualization ${ARMADILLO_LIBRARIES})
 
 install(TARGETS odom_visualization
-  RUNTIME DESTINATION bin
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
 )

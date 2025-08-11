@@ -37,7 +37,7 @@ target_link_libraries(so3_disturbance_generator
 )
 
 install(TARGETS so3_disturbance_generator
-  RUNTIME DESTINATION bin
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
 )

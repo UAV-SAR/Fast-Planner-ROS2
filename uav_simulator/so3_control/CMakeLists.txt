@@ -34,13 +34,17 @@ ament_target_dependencies(SO3Control
 target_link_libraries(so3_control_nodelet SO3Control)
 
 install(TARGETS SO3Control so3_control_nodelet
-  RUNTIME DESTINATION bin
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
 )
 
 install(DIRECTORY include/
   DESTINATION include
+)
+
+install(DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
 )
 
 ament_export_include_directories(include)

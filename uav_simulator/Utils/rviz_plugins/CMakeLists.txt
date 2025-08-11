@@ -68,12 +68,13 @@ install(FILES
   DESTINATION share/${PROJECT_NAME}
 )
 
-install(DIRECTORY media/
-  DESTINATION share/${PROJECT_NAME}/media
+install(FILES
+  config/rviz_config.rviz
+  DESTINATION share/${PROJECT_NAME}/rviz
 )
 
-install(DIRECTORY icons/
-  DESTINATION share/${PROJECT_NAME}/icons
+install(DIRECTORY include
+  DESTINATION include/${PROJECT_NAME}
 )
 
 ament_export_include_directories(include)
