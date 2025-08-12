@@ -27,15 +27,12 @@ add_definitions(-DQT_NO_KEYWORDS)
 
 include_directories(include)
 
-set(SOURCE_FILES
-  src/pose_tool.cpp
+add_library(${PROJECT_NAME} SHARED
   src/goal_tool.cpp
   src/probmap_display.cpp
   src/aerialmap_display.cpp   
   src/multi_probmap_display.cpp
 )
-
-add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 
 target_link_libraries(${PROJECT_NAME}
   Qt5::Core
@@ -57,10 +54,12 @@ ament_target_dependencies(${PROJECT_NAME}
   pluginlib
 )
 
+pluginlib_export_plugin_description_file(rviz_common plugin_description.xml)
+
 install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 install(FILES
@@ -69,11 +68,11 @@ install(FILES
 )
 
 install(FILES
-  config/rviz_config.rviz
+  rviz_config.rviz
   DESTINATION share/${PROJECT_NAME}/rviz
 )
 
-install(DIRECTORY include
+install(DIRECTORY include/
   DESTINATION include/${PROJECT_NAME}
 )
 

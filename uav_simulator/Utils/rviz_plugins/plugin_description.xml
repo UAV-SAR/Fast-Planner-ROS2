@@ -1,5 +1,5 @@
-<library path="lib/librviz_plugins">
-  <class name="rviz_plugins/Goal3DTool"
+<library path="rviz_plugins">
+  <class name="rviz_plugins::Goal3DTool"
          type="rviz_plugins::Goal3DTool"
          base_class_type="rviz_common::Tool">
     <description>
@@ -7,7 +7,7 @@
     </description>
   </class>
 
-  <class name="rviz_plugins/ProbMapDisplay"
+  <class name="rviz_plugins::ProbMapDisplay"
          type="rviz_plugins::ProbMapDisplay"
          base_class_type="rviz_common::Display">
     <description>
@@ -15,7 +15,7 @@
     </description>
   </class>
 
-  <class name="rviz_plugins/AerialMapDisplay"
+  <class name="rviz_plugins::AerialMapDisplay"
          type="rviz_plugins::AerialMapDisplay"
          base_class_type="rviz_common::Display">
     <description>
@@ -23,7 +23,7 @@
     </description>
   </class>  
 
-  <class name="rviz_plugins/MultiProbMapDisplay"
+  <class name="rviz_plugins::MultiProbMapDisplay"
          type="rviz_plugins::MultiProbMapDisplay"
          base_class_type="rviz_common::Display">
     <description>

@@ -26,13 +26,9 @@
   <depend>rviz_default_plugins</depend>
   <depend>rviz_rendering</depend>
   <depend>pluginlib</depend>
-  <depend>qtbase5-dev</depend>
-  <depend>libqt5-core</depend>
-  <depend>libqt5-gui</depend>
-  <depend>libqt5-widgets</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
-    <rviz plugin="${prefix}/plugin_description.xml"/>
+    <rviz_common plugin="${prefix}/plugin_description.xml"/>
   </export>
 </package>

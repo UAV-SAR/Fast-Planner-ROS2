@@ -30,31 +30,63 @@
 #ifndef RVIZ_GOAL_TOOL_H
 #define RVIZ_GOAL_TOOL_H
 
-#include "rviz_plugins/goal_tool.h"
 #include "rviz_plugins/pose_tool.h"
 
+#include <cmath>
+#include <vector>
+
 #include <QObject>
+#include <QCursor>
+
+#include <OgrePlane.h>
+#include <OgreRay.h>
+#include <OgreSceneNode.h>
+#include <OgreVector3.h>
+#include <OgreViewport.h>
+#include <OgreCamera.h>
+#include <OgreSceneManager.h>
 
 #include <rclcpp/rclcpp.hpp>
 #include <tf2_ros/transform_listener.h>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 
+#include "rviz_common/tool.hpp"
+#include "rviz_common/viewport_mouse_event.hpp"
+#include "rviz_rendering/objects/arrow.hpp"
 #include "rviz_common/display_context.hpp"
 #include "rviz_common/properties/string_property.hpp"
+#include "rviz_common/logging.hpp"
+#include "rviz_common/view_controller.hpp"
+#include "rviz_common/view_manager.hpp"
 
 namespace rviz_plugins
 {
 
-class Goal3DTool: public Pose3DTool
+class Goal3DTool: public rviz_common::Tool
 {
 Q_OBJECT
 public:
   Goal3DTool();
-  virtual ~Goal3DTool() {}
+  virtual ~Goal3DTool();
   virtual void onInitialize();
+  void activate() override;
+  void deactivate() override;
+  int processMouseEvent(rviz_common::ViewportMouseEvent & event) override;
 
 protected:
   virtual void onPoseSet(double x, double y, double z, double theta);
+  rviz_rendering::Arrow * arrow_;
+  std::vector<rviz_rendering::Arrow *> arrow_array_;
+
+  enum State
+  {
+    Position,
+    Orientation,
+    Height
+  };
+  State state_;
+
+  Ogre::Vector3 pos_;
 
 private Q_SLOTS:
   void updateTopic();
@@ -62,7 +94,6 @@ private Q_SLOTS:
 private:
   rclcpp::Node::SharedPtr nh_;
   rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pub_;
-
   rviz_common::properties::StringProperty* topic_property_;
 };
 
