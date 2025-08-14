@@ -26,7 +26,7 @@ install(TARGETS decode_msgs encode_msgs
 )
 
 install(DIRECTORY include/
-  DESTINATION include/
+  DESTINATION include
 )
 
 ament_export_include_directories(include)
