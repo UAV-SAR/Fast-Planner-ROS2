@@ -23,7 +23,7 @@ ament_target_dependencies(waypoint_generator
 )
 
 install(TARGETS waypoint_generator
-  RUNTIME DESTINATION bin
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
 )

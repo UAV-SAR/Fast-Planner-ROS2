@@ -22,7 +22,7 @@ ament_target_dependencies(encode_msgs rclcpp quadrotor_msgs)
 install(TARGETS decode_msgs encode_msgs
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY include/

@@ -17,7 +17,7 @@ target_link_libraries(pose_utils ${ARMADILLO_LIBRARIES})
 
 install(TARGETS pose_utils
   EXPORT export_${PROJECT_NAME}
-  RUNTIME DESTINATION bin
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
 )

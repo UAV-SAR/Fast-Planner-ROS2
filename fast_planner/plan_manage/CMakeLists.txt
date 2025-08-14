@@ -84,7 +84,7 @@ install(
     TARGETS traj_server fast_planner_node
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
-    RUNTIME DESTINATION bin
+    RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_export_include_directories(include)

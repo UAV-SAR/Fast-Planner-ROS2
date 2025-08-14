@@ -43,7 +43,7 @@ ament_target_dependencies(multi_map_visualization
 target_link_libraries(multi_map_visualization ${ARMADILLO_LIBRARIES})
 
 install(TARGETS multi_map_visualization
-  RUNTIME DESTINATION bin
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
 )
