@@ -21,8 +21,6 @@
 * along with Fast-Planner. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-
 #include "bspline/non_uniform_bspline.h"
 #include "nav_msgs/msg/odometry.hpp"
 #include "bspline_msgs/msg/bspline.hpp"
