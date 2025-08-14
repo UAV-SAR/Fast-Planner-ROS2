@@ -55,6 +55,7 @@ int main(int argc, char** argv) {
 
   rclcpp::sleep_for(std::chrono::seconds(1));
   rclcpp::spin(nh);
+  rclcpp::shutdown();
 
   return 0;
 }
