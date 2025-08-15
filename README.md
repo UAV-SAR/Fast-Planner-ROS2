@@ -41,6 +41,12 @@ make -j$(nproc)
 sudo make install
 ```
 
+Install **MAVROS**:
+```bash
+sudd apt update
+sudo apt install ros-humble-mavros
+```
+
 Install **ROS 2** dependencies with **rosdep**:
 ```bash
 cd Fast-Planner-ROS2/
