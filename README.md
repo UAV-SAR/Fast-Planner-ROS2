@@ -47,7 +47,7 @@ sudd apt update
 sudo apt install ros-humble-mavros
 ```
 
-Install **ROS 2** dependencies with **rosdep**:
+Install other **ROS 2** dependencies with **rosdep**:
 ```bash
 cd Fast-Planner-ROS2/
 rosdep init && rosdep update
