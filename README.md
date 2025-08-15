@@ -1,5 +1,7 @@
 # Fast-Planner, updated to ROS 2 Humble
 
+This repository is an updated version of **Fast-Planner** developed at **HKUST Aerial Robotics**, introducing compatibility with **ROS 2 Humble**.
+
 ## Original README
 
 **Fast-Planner** is developed aiming to enable quadrotor fast flight in complex unknown environments. It contains a rich set of carefully designed planning algorithms. It also provides a foundational code framework and algorithms that support several popular open-source drone projects, including [ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner),
