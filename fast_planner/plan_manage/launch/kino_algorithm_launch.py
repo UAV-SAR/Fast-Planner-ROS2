@@ -1,3 +1,6 @@
+# Canonical kino algorithm launch (preferred). Other wrapper files (e.g. kino_algorithm.xml)
+# forward to this implementation to avoid duplication.
+
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
