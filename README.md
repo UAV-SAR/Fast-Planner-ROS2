@@ -1,6 +1,6 @@
 # Fast-Planner with ROS 2 Humble and MAVROS Support
 
-*TO DO: Finish updating launch files, include Gazebo setup, add notes on running the project*
+*TO DO: Finish updating launch files, include Gazebo setup, add notes on running and project structure*
 
 *Original Work - [Fast-Planner by HKUST Aerial Robotics](https://github.com/HKUST-Aerial-Robotics/Fast-Planner)*
 
@@ -28,7 +28,9 @@ First, install **ROS 2 Humble** by following the [official guide](https://docs.r
 Install necessary libraries with **apt**:
 ```bash
 sudo apt update
-sudo apt install libeigen3-dev libopencv-dev libpcl-dev libarmadillo-dev
+sudo apt install libeigen3-dev libopencv-dev libpcl-dev libarmadillo-dev 
+sudo apt install python3-colcon-common-extensions
+sudo apt install ros-humble-mavros
 ```
 
 Build and install **nlopt** from source:
@@ -41,23 +43,27 @@ make -j$(nproc)
 sudo make install
 ```
 
-Install **MAVROS**:
-```bash
-sudd apt update
-sudo apt install ros-humble-mavros
-```
-
 Install other **ROS 2** dependencies with **rosdep**:
 ```bash
 cd Fast-Planner-ROS2/
 rosdep init && rosdep update
-rosdep install --from-paths src --ignore-src -y -r
+rosdep install --from-paths src --ignore-src -r -y
 ```
 
 ### Build and Run
 
+Source the **ROS 2** overlay:
+```bash
+source /opt/ros/humble/setup.bash
+```
+
 Build the project with **colcon**:
 ```bash
 cd Fast-Planner-ROS2/
-colcon build
+colcon build --symlink-install
+```
+
+Source the project:
+```bash
+source install/setup.bash
 ```
