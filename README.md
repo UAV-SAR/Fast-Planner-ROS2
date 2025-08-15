@@ -2,7 +2,7 @@
 
 This repository is an updated version of **Fast-Planner** developed at **HKUST Aerial Robotics**, introducing compatibility with **ROS 2 Humble**.
 
-*Original Work: [Fast-Planner by HKUST Aerial Robotics](https://github.com/HKUST-Aerial-Robotics/Fast-Planner)*
+*Original Work - [Fast-Planner by HKUST Aerial Robotics](https://github.com/HKUST-Aerial-Robotics/Fast-Planner)*
 
 ## Original README
 
