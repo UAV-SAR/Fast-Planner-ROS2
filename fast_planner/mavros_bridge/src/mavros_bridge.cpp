@@ -1,10 +1,3 @@
-// File: so3_to_mavros_bridge.cpp
-// Purpose: Bridge quadrotor_msgs/msg/SO3Command to MAVROS AttitudeTarget (PX4/ArduPilot)
-// ROS 2 Humble, C++
-// Motion-only: publishes attitude + thrust. No arming/mode switching.
-// Improvements: fresh timestamps, quaternion validation, re-publish timer,
-// thrust shaping (bounds + optional low-pass), required critical parameters.
-
 #include <rclcpp/rclcpp.hpp>
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/vector3.hpp>
