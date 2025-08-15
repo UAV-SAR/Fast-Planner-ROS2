@@ -1,6 +1,6 @@
 # Fast-Planner with ROS 2 Humble and MAVROS Support
 
-*TO DO: Finish updating launch files, include Gazebo setup, add notes on running and project structure*
+*TO DO: Finish updating launch files, update configuration setup, include Gazebo setup, add notes on running and project structure*
 
 *Original Work - [Fast-Planner by HKUST Aerial Robotics](https://github.com/HKUST-Aerial-Robotics/Fast-Planner)*
 
