@@ -30,7 +30,7 @@ public:
             { state_ = msg; });
 
         local_pose_sub_ = create_subscription<geometry_msgs::msg::PoseStamped>(
-            "/mavros/local_position/pose", 10,
+            "/mavros/local_position/pose", rclcpp::SensorDataQoS(),
             [this](const geometry_msgs::msg::PoseStamped &msg)
             {
                 local_pose_ = msg;
@@ -50,7 +50,7 @@ public:
         using std_srvs::srv::Trigger;
 
         srv_arm_ = this->create_service<Trigger>(
-            "~/arm",
+            "/arm",
             [this](const std::shared_ptr<Trigger::Request> /*req*/,
                    std::shared_ptr<Trigger::Response> res)
             {
@@ -59,7 +59,7 @@ public:
             });
 
         srv_disarm_ = this->create_service<Trigger>(
-            "~/disarm",
+            "/disarm",
             [this](const std::shared_ptr<Trigger::Request> /*req*/,
                    std::shared_ptr<Trigger::Response> res)
             {
@@ -68,7 +68,7 @@ public:
             });
 
         srv_takeoff_ = this->create_service<Trigger>(
-            "~/takeoff",
+            "/takeoff",
             [this](const std::shared_ptr<Trigger::Request> /*req*/,
                    std::shared_ptr<Trigger::Response> res)
             {
@@ -77,7 +77,7 @@ public:
             });
 
         srv_land_ = this->create_service<Trigger>(
-            "~/land",
+            "/land",
             [this](const std::shared_ptr<Trigger::Request> /*req*/,
                    std::shared_ptr<Trigger::Response> res)
             {
