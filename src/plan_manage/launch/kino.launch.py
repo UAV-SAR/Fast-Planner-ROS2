@@ -1,8 +1,11 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.substitutions import LaunchConfiguration
+from launch.launch_description_sources import AnyLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
+from ament_index_python.packages import get_package_share_directory
+import os
 
 def generate_launch_description():
     return LaunchDescription([
@@ -45,6 +48,9 @@ def generate_launch_description():
         DeclareLaunchArgument("point2_x", default_value="0.0"),
         DeclareLaunchArgument("point2_y", default_value="19.0"),
         DeclareLaunchArgument("point2_z", default_value="1.0"),
+
+        # fcu url for mavros
+        DeclareLaunchArgument("fcu_url", default_value="udp://:14540@"),
 
         # planner manager node
         Node(
@@ -220,5 +226,99 @@ def generate_launch_description():
             parameters=[
                 { "waypoint_type": "manual-lonely-waypoint" }
             ]
+        ),
+
+        # mavros launch
+        IncludeLaunchDescription(
+            AnyLaunchDescriptionSource(
+                os.path.join(
+                    get_package_share_directory("mavros"),
+                    "launch",
+                    "px4.launch"
+                )
+            ),
+            launch_arguments={
+                "fcu_url": LaunchConfiguration("fcu_url")
+            }.items()
+        ),
+
+        # mavros bridge node
+        Node(
+            package="mavros_bridge",
+            executable="mavros_bridge",
+            name="mavros_bridge",
+            output="screen",
+            parameters=[
+                {"vehicle_mass": 2.0643},
+                {"hover_thrust": 0.5}
+            ]
+        ),
+
+        # gazebo bridge
+        Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            name="odom_bridge",
+            output="screen",
+            arguments=[
+                "/model/x500_vision_0/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry"
+            ],
+            remappings=[
+                ("/model/x500_vision_0/odometry", "/state_ukf/odom")
+            ]
+        ),
+
+        Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            name="pose_array_bridge",
+            output="screen",
+            arguments=[
+                "/world/baylands/pose/info@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V"
+            ],
+            remappings=[
+                ("/world/baylands/pose/info", "/tf_topic")
+            ]
+        ),
+
+        Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            name="depth_bridge",
+            output="screen",
+            arguments=[
+                "/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image"
+            ],
+            remappings=[
+                ("/depth_camera", "/pcl_render_node/depth")
+            ]
+        ),
+
+        Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            name="cloud_bridge",
+            output="screen",
+            arguments=[
+                "/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked"
+            ],
+            remappings=[
+                ("/depth_camera/points", "/pcl_render_node/cloud")
+            ]
+        ),
+
+        # camera pose publisher util
+        Node(
+            package="utils",
+            executable="link_pose_publisher",
+            name="camera_pose_pub",
+            output="screen",
+            parameters=[
+                {"input_tf_topic": "/tf_topic"},
+                {"target_frame": "camera_link"},
+                {"reference_frame_fallback": "world"},
+                {"output_topic": "/pcl_render_node/camera_pose"},
+                {"use_now_if_zero_stamp": True}
+            ],
         )
     ])
