@@ -4,16 +4,17 @@
   <name>utils</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="damiankryzia71@gmail.com">damian</maintainer>
+  <maintainer email="dkryzia@cpp.edu">Damian Kryzia</maintainer>
   <license>TODO: License declaration</license>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_python</buildtool_depend>
 
-  <depend>rclcpp</depend>
+  <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
+  <depend>mavros_msgs</depend>
   <depend>tf2_msgs</depend>
 
   <export>
-    <build_type>ament_cmake</build_type>
+    <build_type>ament_python</build_type>
   </export>
 </package>
