@@ -223,5 +223,8 @@ def generate_launch_description():
             ]
         ),
 
-        # TO ADD: MAVROS BRIDGE NODE
+        # mavros bridge node
+        Node(
+            
+        ),
     ])

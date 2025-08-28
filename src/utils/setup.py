@@ -19,7 +19,8 @@ setup(
     license='TODO: License declaration',
     entry_points={
         'console_scripts': [
-            'target_pose_publisher = utils.target_pose_publisher:main'
+            'target_pose_publisher = utils.target_pose_publisher:main',
+            'offboard_attitude = utils.offboard_attitude:main'
         ],
     },
 )
