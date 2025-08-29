@@ -41,31 +41,33 @@ const int BsplineOptimizer::NORMAL_PHASE =
     BsplineOptimizer::SMOOTHNESS | BsplineOptimizer::DISTANCE | BsplineOptimizer::FEASIBILITY;
 
 void BsplineOptimizer::setParam(rclcpp::Node::SharedPtr nh) {
-  nh->declare_parameter("optimization/lambda1", -1.0);
-  nh->declare_parameter("optimization/lambda2", -1.0);
-  nh->declare_parameter("optimization/lambda3", -1.0);
-  nh->declare_parameter("optimization/lambda4", -1.0);
-  nh->declare_parameter("optimization/lambda5", -1.0);
-  nh->declare_parameter("optimization/lambda6", -1.0);
-  nh->declare_parameter("optimization/lambda7", -1.0);
-  nh->declare_parameter("optimization/lambda8", -1.0);
-  nh->declare_parameter("optimization/dist0", -1.0);
-  nh->declare_parameter("optimization/max_vel", -1.0);
-  nh->declare_parameter("optimization/max_acc", -1.0);
-  nh->declare_parameter("optimization/visib_min", -1.0);
-  nh->declare_parameter("optimization/dlmin", -1.0);
-  nh->declare_parameter("optimization/wnl", -1.0);
-  nh->declare_parameter("optimization/max_iteration_num1", -1);
-  nh->declare_parameter("optimization/max_iteration_num2", -1);
-  nh->declare_parameter("optimization/max_iteration_num3", -1);
-  nh->declare_parameter("optimization/max_iteration_num4", -1);
-  nh->declare_parameter("optimization/max_iteration_time1", -1.0);
-  nh->declare_parameter("optimization/max_iteration_time2", -1.0);
-  nh->declare_parameter("optimization/max_iteration_time3", -1.0);
-  nh->declare_parameter("optimization/max_iteration_time4", -1.0);
-  nh->declare_parameter("optimization/algorithm1", -1);
-  nh->declare_parameter("optimization/algorithm2", -1);
-  nh->declare_parameter("optimization/order", -1);
+  if (!nh->has_parameter("optimization/lambda1")) {
+    nh->declare_parameter("optimization/lambda1", -1.0);
+    nh->declare_parameter("optimization/lambda2", -1.0);
+    nh->declare_parameter("optimization/lambda3", -1.0);
+    nh->declare_parameter("optimization/lambda4", -1.0);
+    nh->declare_parameter("optimization/lambda5", -1.0);
+    nh->declare_parameter("optimization/lambda6", -1.0);
+    nh->declare_parameter("optimization/lambda7", -1.0);
+    nh->declare_parameter("optimization/lambda8", -1.0);
+    nh->declare_parameter("optimization/dist0", -1.0);
+    nh->declare_parameter("optimization/max_vel", -1.0);
+    nh->declare_parameter("optimization/max_acc", -1.0);
+    nh->declare_parameter("optimization/visib_min", -1.0);
+    nh->declare_parameter("optimization/dlmin", -1.0);
+    nh->declare_parameter("optimization/wnl", -1.0);
+    nh->declare_parameter("optimization/max_iteration_num1", -1);
+    nh->declare_parameter("optimization/max_iteration_num2", -1);
+    nh->declare_parameter("optimization/max_iteration_num3", -1);
+    nh->declare_parameter("optimization/max_iteration_num4", -1);
+    nh->declare_parameter("optimization/max_iteration_time1", -1.0);
+    nh->declare_parameter("optimization/max_iteration_time2", -1.0);
+    nh->declare_parameter("optimization/max_iteration_time3", -1.0);
+    nh->declare_parameter("optimization/max_iteration_time4", -1.0);
+    nh->declare_parameter("optimization/algorithm1", -1);
+    nh->declare_parameter("optimization/algorithm2", -1);
+    nh->declare_parameter("optimization/order", -1);
+  }
 
   nh->get_parameter("optimization/lambda1", lambda1_);
   nh->get_parameter("optimization/lambda2", lambda2_);
@@ -183,7 +185,7 @@ void BsplineOptimizer::optimize() {
     }
   }
 
-  if (dim_ != 1) {
+  // if (dim_ != 1) {
     vector<double> lb(variable_num_), ub(variable_num_);
     const double   bound = 10.0;
     for (int i = 0; i < variable_num_; ++i) {
@@ -192,7 +194,7 @@ void BsplineOptimizer::optimize() {
     }
     opt.set_lower_bounds(lb);
     opt.set_upper_bounds(ub);
-  }
+  // }
 
   try {
     // cout << fixed << setprecision(7);

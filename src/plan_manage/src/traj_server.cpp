@@ -31,6 +31,7 @@
 
 rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr cmd_vis_pub, traj_pub;
 rclcpp::Publisher<quadrotor_msgs::msg::PositionCommand>::SharedPtr pos_cmd_pub;
+rclcpp::Node::SharedPtr node_ptr;
 
 nav_msgs::msg::Odometry odom;
 
@@ -170,7 +171,7 @@ void bsplineCallback(const bspline_msgs::msg::Bspline &msg) {
 void replanCallback(const std_msgs::msg::Empty &msg) {
   /* reset duration */
   const double time_out = 0.01;
-  rclcpp::Time time_now = rclcpp::Clock().now();
+  rclcpp::Time time_now = node_ptr->now();
   double t_stop = (time_now - start_time_).seconds() + time_out;
   traj_duration_ = min(t_stop, traj_duration_);
 }
@@ -203,7 +204,7 @@ void cmdCallback() {
   /* no publishing before receive traj_ */
   if (!receive_traj_) return;
 
-  rclcpp::Time time_now = rclcpp::Clock().now();
+  rclcpp::Time time_now = node_ptr->now();
   double t_cur = (time_now - start_time_).seconds();
 
   Eigen::Vector3d pos, vel, acc, pos_f;
@@ -282,6 +283,7 @@ int main(int argc, char** argv) {
   rclcpp::init(argc, argv);
 
   auto node = std::make_shared<rclcpp::Node>("traj_server");
+  node_ptr = node;
 
   auto bspline_sub = node->create_subscription<bspline_msgs::msg::Bspline>(
     "planning/bspline", 10, &bsplineCallback);
