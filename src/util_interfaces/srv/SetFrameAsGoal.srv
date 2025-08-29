@@ -1,0 +1,6 @@
+# Request: The child_frame_id of the TF transform to use as the goal
+string frame_id
+---
+# Response: True if the goal was found and published successfully
+bool success
+string message

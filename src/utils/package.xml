@@ -3,7 +3,7 @@
 <package format="3">
   <name>utils</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Utilities</description>
   <maintainer email="dkryzia@cpp.edu">Damian Kryzia</maintainer>
   <license>TODO: License declaration</license>
 

@@ -20,7 +20,8 @@ setup(
     entry_points={
         'console_scripts': [
             'target_pose_publisher = utils.target_pose_publisher:main',
-            'offboard_attitude = utils.offboard_attitude:main'
+            'offboard_attitude = utils.offboard_attitude:main',
+            'goal_server = utils.goal_server:main'
         ],
     },
 )

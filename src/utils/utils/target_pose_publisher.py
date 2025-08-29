@@ -26,7 +26,9 @@ class TargetPosePublisher(Node):
 
         if self.input_topic_ is None or self.output_topic_ is None:
              self.get_logger().error('One or more of the required parameters (\'input_topic\', \'output_topic\') are missing.')
-
+             rclpy.shutdown()
+             return
+        
         self.sub_ = self.create_subscription(TFMessage, self.input_topic_, self.tf_callback, 10)
         self.pub_ = self.create_publisher(PoseStamped, self.output_topic_, 10)
 

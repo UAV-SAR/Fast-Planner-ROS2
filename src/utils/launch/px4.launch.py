@@ -85,5 +85,18 @@ def generate_launch_description():
                 {"input_topic": "/gz_tf_topic"},
                 {"output_topic": "/camera_pose"}
             ]
+        ),
+
+        Node(
+            package="utils",
+            executable="goal_server",
+            name="goal_server",
+            output="screen",
+            parameters=[
+                {
+                    "input_topic": "/gz_tf_topic",
+                    "output_topic": "/move_base_simple/goal"
+                }
+            ]
         )
     ])
