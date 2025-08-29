@@ -7,9 +7,9 @@ import os
 
 def generate_launch_description():
     return LaunchDescription([
-        DeclareLaunchArgument("map_size_x", default_value="40.0"),
-        DeclareLaunchArgument("map_size_y", default_value="20.0"),
-        DeclareLaunchArgument("map_size_z", default_value="5.0"),
+        DeclareLaunchArgument("map_size_x", default_value="80.0"),
+        DeclareLaunchArgument("map_size_y", default_value="80.0"),
+        DeclareLaunchArgument("map_size_z", default_value="10.0"),
 
         DeclareLaunchArgument("odom_topic", default_value="/odom"),
         DeclareLaunchArgument("camera_pose_topic", default_value="/camera_pose"),
@@ -17,10 +17,10 @@ def generate_launch_description():
         DeclareLaunchArgument("cloud_topic", default_value="/cloud"),
 
         # intrinsic params of the depth camera
-        DeclareLaunchArgument("cx", default_value="321.04638671875"),
-        DeclareLaunchArgument("cy", default_value="243.44969177246094"),
-        DeclareLaunchArgument("fx", default_value="387.229248046875"),
-        DeclareLaunchArgument("fy", default_value="387.229248046875"),
+        DeclareLaunchArgument("cx", default_value="320.0"),
+        DeclareLaunchArgument("cy", default_value="240.0"),
+        DeclareLaunchArgument("fx", default_value="432.496"),
+        DeclareLaunchArgument("fy", default_value="432.496"),
 
         # maximum velocity and acceleration the drone will reach
         DeclareLaunchArgument("max_vel", default_value="3.0"),
@@ -90,10 +90,10 @@ def generate_launch_description():
                     "sdf_map/local_update_range_x": 5.5,
                     "sdf_map/local_update_range_y": 5.5,
                     "sdf_map/local_update_range_z": 4.5,
-                    "sdf_map/obstacles_inflation": 0.099,
+                    "sdf_map/obstacles_inflation": 0.3,
                     "sdf_map/local_bound_inflate": 0.0,
                     "sdf_map/local_map_margin": 50,
-                    "sdf_map/ground_height": -1.0,
+                    "sdf_map/ground_height": -0.1,
 
                     # camera parameter
                     "sdf_map/cx": ParameterValue(LaunchConfiguration("cx"), value_type=float),
@@ -107,7 +107,7 @@ def generate_launch_description():
                     "sdf_map/depth_filter_maxdist": 5.0,
                     "sdf_map/depth_filter_mindist": 0.2,
                     "sdf_map/depth_filter_margin": 2,
-                    "sdf_map/k_depth_scaling_factor": 1000.0,
+                    "sdf_map/k_depth_scaling_factor": 1.0,
                     "sdf_map/skip_pixel": 2,
 
                     # local fusion
@@ -117,7 +117,7 @@ def generate_launch_description():
                     "sdf_map/p_max": 0.90,
                     "sdf_map/p_occ": 0.80,
                     "sdf_map/min_ray_length": 0.5,
-                    "sdf_map/max_ray_length": 4.5,
+                    "sdf_map/max_ray_length": 19.0,
 
                     "sdf_map/esdf_slice_height": 0.3,
                     "sdf_map/visualization_truncate_height": 2.49,
@@ -224,8 +224,8 @@ def generate_launch_description():
             output="screen",
             parameters=[
                 {
-                    "vehicle_mass": 2.0643,
-                    "hover_thrust": 0.5
+                    "vehicle_mass": 2.1253,
+                    "hover_thrust": 0.741
                 }
             ]
         )
