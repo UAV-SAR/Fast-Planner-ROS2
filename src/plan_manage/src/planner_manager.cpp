@@ -87,9 +87,13 @@ void FastPlannerManager::initPlanModules(rclcpp::Node::SharedPtr nh) {
 
   if (use_optimization) {
     bspline_optimizers_.resize(10);
+    bool params_declared = false;
     for (int i = 0; i < 10; ++i) {
       bspline_optimizers_[i].reset(new BsplineOptimizer);
-      bspline_optimizers_[i]->setParam(nh);
+      if (!params_declared) {
+        bspline_optimizers_[i]->setParam(nh);
+        params_declared = true;
+      }
       bspline_optimizers_[i]->setEnvironment(edt_environment_);
     }
   }

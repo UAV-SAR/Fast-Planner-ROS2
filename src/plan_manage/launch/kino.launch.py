@@ -61,11 +61,12 @@ def generate_launch_description():
                 ("/sdf_map/depth", LaunchConfiguration("depth_topic")),
             ],
             parameters=[
-                # replanning method
-                { "planner_node/planner": 1 },
-
-                # planning fsm
+                
                 {
+                    # replanning method
+                    "planner_node/planner": 1,
+
+                    # planning fsm
                     "fsm/flight_type": ParameterValue(LaunchConfiguration("flight_type"), value_type=int),
                     "fsm/thresh_replan": 1.5,
                     "fsm/thresh_no_replan": 2.0,
@@ -80,10 +81,8 @@ def generate_launch_description():
                     "fsm/waypoint2_x": ParameterValue(LaunchConfiguration("point2_x"), value_type=float),
                     "fsm/waypoint2_y": ParameterValue(LaunchConfiguration("point2_y"), value_type=float),
                     "fsm/waypoint2_z": ParameterValue(LaunchConfiguration("point2_z"), value_type=float),
-                },
 
-                # sdf map
-                {
+                    # sdf map
                     "sdf_map/resolution": 0.1,
                     "sdf_map/map_size_x": ParameterValue(LaunchConfiguration("map_size_x"), value_type=float),
                     "sdf_map/map_size_y": ParameterValue(LaunchConfiguration("map_size_y"), value_type=float),
@@ -126,11 +125,9 @@ def generate_launch_description():
                     "sdf_map/show_occ_time": False,
                     "sdf_map/show_esdf_time": False,
                     "sdf_map/pose_type": 1,
-                    "sdf_map/frame_id": "world"
-                },
+                    "sdf_map/frame_id": "world",
 
-                # planner manager
-                {
+                    # planner manager
                     "manager/max_vel": ParameterValue(LaunchConfiguration("max_vel"), value_type=float),
                     "manager/max_acc": ParameterValue(LaunchConfiguration("max_acc"), value_type=float),
                     "manager/max_jerk": 4.0,
@@ -142,11 +139,9 @@ def generate_launch_description():
                     "manager/use_geometric_path": False,
                     "manager/use_kinodynamic_path": True,
                     "manager/use_topo_path": False,
-                    "manager/use_optimization": True
-                },
+                    "manager/use_optimization": True,
 
-                # kinodynamic path finding
-                {
+                    # kinodynamic path finding
                     "search/max_tau": 0.6,
                     "search/init_max_tau": 0.8,
                     "search/max_vel": ParameterValue(LaunchConfiguration("max_vel"), value_type=float),
@@ -158,11 +153,9 @@ def generate_launch_description():
                     "search/time_resolution": 0.8,
                     "search/margin": 0.2,
                     "search/allocate_num": 100000,
-                    "search/check_num": 5
-                },
+                    "search/check_num": 5,
 
-                # trajectory optimization
-                {
+                    # trajectory optimization
                     "optimization/lambda1": 10.0,
                     "optimization/lambda2": 5.0,
                     "optimization/lambda3": 0.00001,
@@ -225,6 +218,15 @@ def generate_launch_description():
 
         # mavros bridge node
         Node(
-            
-        ),
+            package="mavros_bridge",
+            executable="mavros_bridge",
+            name="mavros_bridge",
+            output="screen",
+            parameters=[
+                {
+                    "vehicle_mass": 2.0643,
+                    "hover_thrust": 0.5
+                }
+            ]
+        )
     ])
