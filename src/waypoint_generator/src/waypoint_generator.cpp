@@ -28,8 +28,8 @@ class WayPointGeneratorNode : public rclcpp::Node
             sub2 = this->create_subscription<geometry_msgs::msg::PoseStamped>("goal", 10, std::bind(&WayPointGeneratorNode::goal_callback, this, std::placeholders::_1));
             sub3 = this->create_subscription<geometry_msgs::msg::PoseStamped>("traj_start_trigger", 10, std::bind(&WayPointGeneratorNode::traj_start_trigger_callback, this, std::placeholders::_1));
 
-            pub1 = this->create_publisher<nav_msgs::msg::Path>("waypoints", 50);
-            pub2 = this->create_publisher<geometry_msgs::msg::PoseArray>("waypoints_vis", 10);
+            pub1 = this->create_publisher<nav_msgs::msg::Path>("/waypoint_generator/waypoints", 50);
+            pub2 = this->create_publisher<geometry_msgs::msg::PoseArray>("/waypoint_generator/waypoints_vis", 10);
 
             trigged_time = rclcpp::Time(0);
         }
