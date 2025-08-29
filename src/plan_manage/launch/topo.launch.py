@@ -227,5 +227,19 @@ def generate_launch_description():
             parameters=[
                 { "waypoint_type": "manual-lonely-waypoint" }
             ]
+        ),
+
+        # mavros bridge node
+        Node(
+            package="mavros_bridge",
+            executable="mavros_bridge",
+            name="mavros_bridge",
+            output="screen",
+            parameters=[
+                {
+                    "vehicle_mass": 2.0643,
+                    "hover_thrust": 0.5
+                }
+            ]
         )
     ])
