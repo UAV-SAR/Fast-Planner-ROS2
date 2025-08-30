@@ -1,6 +1,6 @@
 # Fast-Planner with ROS 2 Humble and MAVROS Support
 
-*TO DO: Finish updating launch files (ADD MAVROS BRIDGE), add PX4 with custom world and model, add notes on running and project structure*
+*TO DO: Update topo.launch.py*
 
 *Original Work - [Fast-Planner by HKUST Aerial Robotics](https://github.com/HKUST-Aerial-Robotics/Fast-Planner)*
 
@@ -71,6 +71,25 @@ rosdep init && rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 ```
 
+Finally, modify an existing PX4 model to include both odometry and a depth camera.
+Open the file `PX4-Autopilot/Tools/simulation/gz/models/x500_vision/model.sdf` and change the base model from `x500` to `x500_depth`.
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version='1.9'>
+  <model name='x500_vision'>
+    <include merge='true'>
+      <!-- <uri>x500</uri> -->
+      <uri>x500_depth</uri>
+    </include>
+    <plugin
+      filename="gz-sim-odometry-publisher-system"
+      name="gz::sim::systems::OdometryPublisher">
+      <dimensions>3</dimensions>
+    </plugin>
+  </model>
+</sdf>
+```
+
 ### Build and Run
 
 **Terminal 1** Build **PX4**. The Baylands world, with a modified odometry + depth camera drone was used for testing.
@@ -93,10 +112,31 @@ source /opt/ros/humble/setup.bash
 Build the project with **colcon**:
 ```bash
 cd Fast-Planner-ROS2/
+colcon build --packages-select quadrotor_msgs multi_map_msgs bspline_msgs swarmtal_msgs util_interfaces
+source install/setup.bash
 colcon build
 ```
 
-Source the project:
+**Terminal 3** Source the project and run the **PX4**, **Gazebo**, and **MAVROS** utils launch:
 ```bash
 source install/setup.bash
+ros2 launch utils px4.launch.py
+```
+
+**Terminal 4** Source the project and run the **Fast-Planner** system:
+```bash
+source install/setup.bash
+ros2 launch plan_manage kino.launch.py
+```
+*NOTE: In case of any naming or setup mismatch, change parameters in kino.launch.py and px4.launch.py accordingly.*
+
+**Terminal 5** Publish a goal waypoint for the planner. The */send_goal* service has been set up to accept a name of a **Gazebo** object that will serve as a target. You can read the frame ID from **Gazebo** and input it here. Example with "box":
+```bash
+source install/setup.bash
+ros2 service call util_interfaces/srv/SetFrameAsGoal "{frame_id: 'box'}"
+```
+
+**Terminal 6** First, have the drone take off via QGroundControl. Then, use **MAVROS** to set the mode to **OFFBOARD**. At this point, the simulated drone should fly towards the target you set in the previous step.
+```bash
+ros2 service call /mavros/set_mode mavros_msgs/srv/SetMode "{base_mode: 0, custom_mode: 'OFFBOARD'}"
 ```
