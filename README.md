@@ -23,14 +23,35 @@ This repository has been tested with the following dependencies:
 * PCL 1.12.1
 * Armadillo 10.8.2
 
-First, install **ROS 2 Humble** by following the [official guide](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html).
+Clone this repository, including **PX4** submodules:
+```bash
+git clone https://github.com/damiankryzia71/Fast-Planner-ROS2.git --recursive
+cd Fast-Planner-ROS2/
+```
+
+Install **PX4** dependencies, then reboot:
+```bash
+bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
+reboot
+```
+
+Install **ROS 2 Humble** by following the [official guide](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html).
 
 Install necessary libraries with **apt**:
 ```bash
 sudo apt update
+sudo apt install gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gl -y
+sudo apt install libfuse2 -y
+sudo apt install libxcb-xinerama0 libxkbcommon-x11-0 libxcb-cursor-dev -y
 sudo apt install libeigen3-dev libopencv-dev libpcl-dev libarmadillo-dev 
 sudo apt install python3-colcon-common-extensions
 sudo apt install ros-humble-mavros
+```
+
+Download **QGroundControl**:
+```bash
+cd Fast-Planner-ROS2/
+wget https://d176tv9ibo4jno.cloudfront.net/latest/QGroundControl-x86_64.AppImage
 ```
 
 Build and install **nlopt** from source:
@@ -52,6 +73,18 @@ rosdep install --from-paths src --ignore-src -r -y
 
 ### Build and Run
 
+**Terminal 1** Build **PX4**. The Baylands world, with a modified odometry + depth camera drone was used for testing.
+```bash
+cd PX4-Autopilot/
+make px4_sitl gz_x500_vision_baylands
+```
+
+**Terminal 2** Launch QGroundControl:
+```bash
+chmod +x QGroundControl-x86_64.AppImage
+./QGroundControl-x86_64.AppImage
+```
+
 Source the **ROS 2** overlay:
 ```bash
 source /opt/ros/humble/setup.bash
@@ -60,7 +93,7 @@ source /opt/ros/humble/setup.bash
 Build the project with **colcon**:
 ```bash
 cd Fast-Planner-ROS2/
-colcon build --symlink-install
+colcon build
 ```
 
 Source the project:
