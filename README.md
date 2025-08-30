@@ -7,8 +7,7 @@
 This repository is an updated version of **Fast-Planner** developed at **HKUST Aerial Robotics**. It introduces:
 * **ROS 2** Humble support
 * Custom **MAVROS** bridge
-* **Gazebo** setup for simulated testing
-* Simplified configuration step
+* **PX4** submodule for simulated testing
 * Simplified launch files
 * Simplified file structure
 
