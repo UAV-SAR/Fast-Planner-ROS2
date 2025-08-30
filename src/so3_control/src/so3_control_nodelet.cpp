@@ -55,7 +55,7 @@ public:
     corrections_[1] = this->get_parameter("corrections/r").as_double();
     corrections_[2] = this->get_parameter("corrections/p").as_double();
 
-    so3_command_pub_ = this->create_publisher<quadrotor_msgs::msg::SO3Command>("so3_cmd", 10);
+    so3_command_pub_ = this->create_publisher<quadrotor_msgs::msg::SO3Command>("/so3_cmd", 10);
 
     odom_sub_ = this->create_subscription<nav_msgs::msg::Odometry>(
       "odom", 10,

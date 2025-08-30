@@ -70,6 +70,8 @@ public:
   EDTEnvironment::Ptr edt_environment_;
 
 private:
+  rclcpp::Node::SharedPtr node_;
+
   /* main planning algorithms & modules */
   SDFMap::Ptr sdf_map_;
 

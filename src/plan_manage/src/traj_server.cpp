@@ -59,7 +59,7 @@ void displayTrajWithColor(vector<Eigen::Vector3d> path, double resolution, Eigen
                           int id) {
   visualization_msgs::msg::Marker mk;
   mk.header.frame_id = "world";
-  mk.header.stamp = rclcpp::Clock().now();
+  mk.header.stamp = node_ptr->now();
   mk.type = visualization_msgs::msg::Marker::SPHERE_LIST;
   mk.action = visualization_msgs::msg::Marker::DELETE;
   mk.id = id;
@@ -96,7 +96,7 @@ void drawCmd(const Eigen::Vector3d& pos, const Eigen::Vector3d& vec, const int& 
              const Eigen::Vector4d& color) {
   visualization_msgs::msg::Marker mk_state;
   mk_state.header.frame_id = "world";
-  mk_state.header.stamp = rclcpp::Clock().now();
+  mk_state.header.stamp = node_ptr->now();
   mk_state.id = id;
   mk_state.type = visualization_msgs::msg::Marker::ARROW;
   mk_state.action = visualization_msgs::msg::Marker::ADD;

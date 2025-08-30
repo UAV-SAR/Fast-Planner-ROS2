@@ -190,7 +190,7 @@ void KinoReplanFSM::execFSMCallback() {
     case EXEC_TRAJ: {
       /* determine if need to replan */
       LocalTrajData* info     = &planner_manager_->local_data_;
-      rclcpp::Time      time_now = rclcpp::Clock().now();
+      rclcpp::Time      time_now = node_->now();
       double         t_cur    = (time_now - info->start_time_).seconds();
       t_cur                   = min(info->duration_, t_cur);
 
@@ -218,7 +218,7 @@ void KinoReplanFSM::execFSMCallback() {
 
     case REPLAN_TRAJ: {
       LocalTrajData* info     = &planner_manager_->local_data_;
-      rclcpp::Time      time_now = rclcpp::Clock().now();
+      rclcpp::Time      time_now = node_->now();
       double         t_cur    = (time_now - info->start_time_).seconds();
 
       start_pt_  = info->position_traj_.evaluateDeBoorT(t_cur);

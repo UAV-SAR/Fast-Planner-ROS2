@@ -111,6 +111,8 @@ public:
 
 class TopologyPRM {
 private:
+  rclcpp::Node::SharedPtr node_;
+
   /* data */
   EDTEnvironment::Ptr edt_environment_;  // environment representation
 

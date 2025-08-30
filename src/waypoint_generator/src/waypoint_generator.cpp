@@ -118,7 +118,7 @@ class WayPointGeneratorNode : public rclcpp::Node
         void publish_waypoints() 
         {
             waypoints.header.frame_id = std::string("world");
-            waypoints.header.stamp = rclcpp::Clock().now();
+            waypoints.header.stamp = this->now();
             pub1->publish(waypoints);
             geometry_msgs::msg::PoseStamped init_pose;
             init_pose.header = odom.header;
@@ -132,7 +132,7 @@ class WayPointGeneratorNode : public rclcpp::Node
             nav_msgs::msg::Path wp_vis = waypoints;
             geometry_msgs::msg::PoseArray poseArray;
             poseArray.header.frame_id = std::string("world");
-            poseArray.header.stamp = rclcpp::Clock().now();
+            poseArray.header.stamp = this->now();
 
             {
                 geometry_msgs::msg::Pose init_pose;
@@ -179,7 +179,7 @@ class WayPointGeneratorNode : public rclcpp::Node
 
         void goal_callback(const geometry_msgs::msg::PoseStamped &msg) 
         {
-            trigged_time = rclcpp::Clock().now();
+            trigged_time = this->now();
             
             if (waypoint_type == string("circle")) {
                 waypoints = circle();

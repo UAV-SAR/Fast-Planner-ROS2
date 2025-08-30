@@ -45,7 +45,7 @@ public:
     }
 
     this->att_pub_ = this->create_publisher<mavros_msgs::msg::AttitudeTarget>(this->setpoint_topic_, 50);
-    this->so3_sub_ = this->create_subscription<quadrotor_msgs::msg::SO3Command>("so3_cmd", 50, std::bind(&SO3ToMavrosBridge::so3Callback, this, _1));
+    this->so3_sub_ = this->create_subscription<quadrotor_msgs::msg::SO3Command>("/so3_cmd", 50, std::bind(&SO3ToMavrosBridge::so3Callback, this, _1));
 
     auto period = std::chrono::duration<double>(1.0 / std::max(1.0, this->publish_rate_hz_));
     this->timer_ = this->create_wall_timer(period, std::bind(&SO3ToMavrosBridge::timerPublish, this));

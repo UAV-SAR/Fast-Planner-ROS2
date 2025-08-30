@@ -59,6 +59,7 @@ uniform_real_distribution<double> rand_yaw_dot;
 uniform_real_distribution<double> rand_yaw;
 
 rclcpp::Time time_update, time_change;
+rclcpp::Node::SharedPtr node_ptr;
 
 void updateCallback();
 void visualizeObj(int id);
@@ -66,6 +67,7 @@ void visualizeObj(int id);
 int main(int argc, char** argv) {
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("dynamic_obj");
+  node_ptr = node;
 
   /* ---------- initialize ---------- */
   node->declare_parameter("obj_generator/obj_num", 10);
@@ -136,8 +138,8 @@ int main(int argc, char** argv) {
     obj_models.push_back(model);
   }
 
-  time_update = rclcpp::Clock().now();
-  time_change = rclcpp::Clock().now();
+  time_update = node_ptr->now();
+  time_change = node_ptr->now();
 
   /* ---------- start loop ---------- */
   rclcpp::spin(node);
@@ -147,7 +149,7 @@ int main(int argc, char** argv) {
 }
 
 void updateCallback() {
-  rclcpp::Time time_now = rclcpp::Clock().now();
+  rclcpp::Time time_now = node_ptr->now();
 
   /* ---------- change input ---------- */
   double dtc = (time_now - time_change).seconds();
@@ -211,7 +213,7 @@ void visualizeObj(int id) {
   /* ---------- rviz ---------- */
   visualization_msgs::msg::Marker mk;
   mk.header.frame_id = "world";
-  mk.header.stamp = rclcpp::Clock().now();
+  mk.header.stamp = node_ptr->now();
   mk.type = visualization_msgs::msg::Marker::CUBE;
   mk.action = visualization_msgs::msg::Marker::ADD;
   mk.id = id;

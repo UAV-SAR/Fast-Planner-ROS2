@@ -9,6 +9,7 @@
 
 rclcpp::Publisher<multi_map_msgs::msg::MultiOccupancyGrid>::SharedPtr pub1;
 rclcpp::Publisher<sensor_msgs::msg::PointCloud>::SharedPtr pub2;
+rclcpp::Node::SharedPtr node_ptr;
 
 vector<Map2D> maps2d;
 vector<geometry_msgs::msg::Pose> origins2d;
@@ -69,7 +70,7 @@ void maps3d_callback(const multi_map_msgs::msg::MultiSparseMap3D &msg)
     }
   }
   // Publish
-  m.header.stamp    = rclcpp::Clock().now();
+  m.header.stamp    = node_ptr->now();
   m.header.frame_id = string("/map");
   pub2->publish(m);
 }
@@ -78,6 +79,7 @@ int main(int argc, char** argv)
 {
   rclcpp::init(argc, argv);
   rclcpp::Node::SharedPtr n = std::make_shared<rclcpp::Node>("multi_map_visualization");
+  node_ptr = n;
 
   rclcpp::Subscription<multi_map_msgs::msg::MultiOccupancyGrid>::SharedPtr sub1 = n->create_subscription<multi_map_msgs::msg::MultiOccupancyGrid>("dmaps2d", 1, &maps2d_callback);
   rclcpp::Subscription<multi_map_msgs::msg::MultiSparseMap3D>::SharedPtr sub2 = n->create_subscription<multi_map_msgs::msg::MultiSparseMap3D>("dmaps3d", 1, &maps3d_callback);

@@ -69,6 +69,8 @@ void TopologyPRM::init(rclcpp::Node::SharedPtr nh) {
   for (int i = 0; i < max_raw_path_; ++i) {
     casters_.push_back(RayCaster());
   }
+
+  this->node_ = nh;
 }
 
 void TopologyPRM::findTopoPaths(Eigen::Vector3d start, Eigen::Vector3d end,
@@ -80,44 +82,44 @@ void TopologyPRM::findTopoPaths(Eigen::Vector3d start, Eigen::Vector3d end,
 
   double graph_time, search_time, short_time, prune_time, select_time;
   /* ---------- create the topo graph ---------- */
-  t1 = rclcpp::Clock().now();
+  t1 = node_->now();
 
   start_pts_ = start_pts;
   end_pts_ = end_pts;
 
   graph = createGraph(start, end);
 
-  graph_time = (rclcpp::Clock().now() - t1).seconds();
+  graph_time = (node_->now() - t1).seconds();
 
   /* ---------- search paths in the graph ---------- */
-  t1 = rclcpp::Clock().now();
+  t1 = node_->now();
 
   raw_paths = searchPaths();
 
-  search_time = (rclcpp::Clock().now() - t1).seconds();
+  search_time = (node_->now() - t1).seconds();
 
   /* ---------- path shortening ---------- */
   // for parallel, save result in short_paths_
-  t1 = rclcpp::Clock().now();
+  t1 = node_->now();
 
   shortcutPaths();
 
-  short_time = (rclcpp::Clock().now() - t1).seconds();
+  short_time = (node_->now() - t1).seconds();
 
   /* ---------- prune equivalent paths ---------- */
-  t1 = rclcpp::Clock().now();
+  t1 = node_->now();
 
   filtered_paths = pruneEquivalent(short_paths_);
 
-  prune_time = (rclcpp::Clock().now() - t1).seconds();
+  prune_time = (node_->now() - t1).seconds();
   // cout << "prune: " << (t2 - t1).seconds() << endl;
 
   /* ---------- select N shortest paths ---------- */
-  t1 = rclcpp::Clock().now();
+  t1 = node_->now();
 
   select_paths = selectShortPaths(filtered_paths, 1);
 
-  select_time = (rclcpp::Clock().now() - t1).seconds();
+  select_time = (node_->now() - t1).seconds();
 
   final_paths_ = select_paths;
 
@@ -166,7 +168,7 @@ list<GraphNode::Ptr> TopologyPRM::createGraph(Eigen::Vector3d start, Eigen::Vect
   Eigen::Vector3d pt;
   rclcpp::Time t1, t2;
   while (sample_time < max_sample_time_ && sample_num < max_sample_num_) {
-    t1 = rclcpp::Clock().now();
+    t1 = node_->now();
 
     pt = getSample();
     ++sample_num;
@@ -175,7 +177,7 @@ list<GraphNode::Ptr> TopologyPRM::createGraph(Eigen::Vector3d start, Eigen::Vect
     // edt_environment_->evaluateEDTWithGrad(pt, -1.0, dist, grad);
     dist = edt_environment_->evaluateCoarseEDT(pt, -1.0);
     if (dist <= clearance_) {
-      sample_time += (rclcpp::Clock().now() - t1).seconds();
+      sample_time += (node_->now() - t1).seconds();
       continue;
     }
 
@@ -190,7 +192,7 @@ list<GraphNode::Ptr> TopologyPRM::createGraph(Eigen::Vector3d start, Eigen::Vect
       // sortVisibGuard(visib_guards);
       bool need_connect = needConnection(visib_guards[0], visib_guards[1], pt);
       if (!need_connect) {
-        sample_time += (rclcpp::Clock().now() - t1).seconds();
+        sample_time += (node_->now() - t1).seconds();
         continue;
       }
       // new useful connection needed, add new connector
@@ -205,7 +207,7 @@ list<GraphNode::Ptr> TopologyPRM::createGraph(Eigen::Vector3d start, Eigen::Vect
       connector->neighbors_.push_back(visib_guards[1]);
     }
 
-    sample_time += (rclcpp::Clock().now() - t1).seconds();
+    sample_time += (node_->now() - t1).seconds();
   }
 
   /* print record */

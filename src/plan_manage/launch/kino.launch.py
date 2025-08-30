@@ -216,6 +216,24 @@ def generate_launch_description():
             ]
         ),
 
+        # SO3 control node
+        Node(
+            package="so3_control",
+            executable="so3_control_nodelet",
+            name="so3_control_node",
+            output="screen",
+            remappings=[
+                ("odom", LaunchConfiguration("odom_topic")),
+                ("position_cmd", "planning/pos_cmd")
+            ],
+            parameters=[
+                {
+                    "mass": 2.1253,
+                    "use_external_yaw": False
+                }
+            ]
+        ),
+
         # mavros bridge node
         Node(
             package="mavros_bridge",
