@@ -91,6 +91,15 @@ Open the file `PX4-Autopilot/Tools/simulation/gz/models/x500_vision/model.sdf` a
 
 ### Build and Run
 
+Build the project with **colcon**:
+```bash
+source /opt/ros/humble/setup.bash
+cd Fast-Planner-ROS2/
+colcon build --packages-select quadrotor_msgs multi_map_msgs bspline_msgs swarmtal_msgs util_interfaces
+source install/setup.bash
+colcon build
+```
+
 **Terminal 1** Build **PX4**. The Baylands world, with a modified odometry + depth camera drone was used for testing.
 ```bash
 cd PX4-Autopilot/
@@ -106,14 +115,6 @@ chmod +x QGroundControl-x86_64.AppImage
 Source the **ROS 2** overlay in each new terminal:
 ```bash
 source /opt/ros/humble/setup.bash
-```
-
-Build the project with **colcon**:
-```bash
-cd Fast-Planner-ROS2/
-colcon build --packages-select quadrotor_msgs multi_map_msgs bspline_msgs swarmtal_msgs util_interfaces
-source install/setup.bash
-colcon build
 ```
 
 **Terminal 3** Source the project and run the **PX4**, **Gazebo**, and **MAVROS** utils launch:
