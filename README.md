@@ -1,6 +1,6 @@
 # Fast-Planner with ROS 2 Humble and MAVROS Support
 
-*TO DO: Update topo.launch.py*
+*TO DO: Update topo.launch.py, include Gazebo playground with correct launch parameters for the planner.*
 
 *Original Work - [Fast-Planner by HKUST Aerial Robotics](https://github.com/HKUST-Aerial-Robotics/Fast-Planner)*
 
