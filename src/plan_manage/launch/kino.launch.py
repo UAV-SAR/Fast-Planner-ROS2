@@ -23,8 +23,8 @@ def generate_launch_description():
         DeclareLaunchArgument("fy", default_value="432.496"),
 
         # maximum velocity and acceleration the drone will reach
-        DeclareLaunchArgument("max_vel", default_value="3.0"),
-        DeclareLaunchArgument("max_acc", default_value="2.0"),
+        DeclareLaunchArgument("max_vel", default_value="1.5"),
+        DeclareLaunchArgument("max_acc", default_value="1.0"),
 
         # 1: use 2D Nav Goal to select goal
         # 2: use global waypoints below
@@ -134,7 +134,7 @@ def generate_launch_description():
                     "manager/dynamic_environment": 0,
                     "manager/local_segment_length": 6.0,
                     "manager/clearance_threshold": 0.2,
-                    "manager/control_points_distance": 0.5,
+                    "manager/control_points_distance": 1.0,
 
                     "manager/use_geometric_path": False,
                     "manager/use_kinodynamic_path": True,
@@ -142,14 +142,14 @@ def generate_launch_description():
                     "manager/use_optimization": True,
 
                     # kinodynamic path finding
-                    "search/max_tau": 0.6,
+                    "search/max_tau": 0.5,
                     "search/init_max_tau": 0.8,
                     "search/max_vel": ParameterValue(LaunchConfiguration("max_vel"), value_type=float),
                     "search/max_acc": ParameterValue(LaunchConfiguration("max_acc"), value_type=float),
                     "search/w_time": 10.0,
-                    "search/horizon": 7.0,
-                    "search/lambda_heu": 5.0,
-                    "search/resolution_astar": 0.1,
+                    "search/horizon": 50.0,
+                    "search/lambda_heu": 1.0,
+                    "search/resolution_astar": 0.2,
                     "search/time_resolution": 0.8,
                     "search/margin": 0.2,
                     "search/allocate_num": 100000,
@@ -180,7 +180,7 @@ def generate_launch_description():
 
                     "bspline/limit_vel": ParameterValue(LaunchConfiguration("max_vel"), value_type=float),
                     "bspline/limit_acc": ParameterValue(LaunchConfiguration("max_acc"), value_type=float),
-                    "bspline/limit_ratio": 1.1
+                    "bspline/limit_ratio": 3.5
                 }
             ]
         ),
