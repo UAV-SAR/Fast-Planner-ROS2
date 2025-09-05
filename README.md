@@ -24,7 +24,7 @@ This repository has been tested with the following dependencies:
 
 Clone this repository, including **PX4** submodules:
 ```bash
-git clone --recursive https://github.com/damiankryzia71/Fast-Planner-ROS2.git
+git clone --recursive https://github.com/UAV-SAR/Fast-Planner-ROS2.git
 cd Fast-Planner-ROS2/
 ```
 
